@@ -1,0 +1,179 @@
+generator client {
+    provider  = "prisma-client-js"
+}
+
+datasource db {
+    provider  = "postgresql"
+    url       = env("POSTGRES_PRISMA_URL")
+    directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Artikelbestand {
+    @@map("artikelbestand")
+
+	PART_NO                       String  @id
+	CONTRACT                      String?
+	CONFIGURATION_ID              String?
+	LOCATION_NO                   String?
+	LOT_BATCH_NO                  String?
+	SERIAL_NO                     String?
+	ENG_CHG_LEVEL                 String?
+	WAIV_DEV_REJ_NO               String?
+	ACTIVITY_SEQ                  String?
+	HANDLING_UNIT_ID              String?
+	AVG_UNIT_TRANSIT_COST         String?
+	COUNT_VARIANCE                String?
+	EXPIRATION_DATE               String?
+	FREEZE_FLAG                   String?
+	LAST_ACTIVITY_DATE            String?
+	LAST_COUNT_DATE               String?
+	LOCATION_TYPE                 String?
+	QTY_IN_TRANSIT                String?
+	QTY_ONHAND                    String?
+	QTY_RESERVED                  String?
+	RECEIPT_DATE                  String?
+	SOURCE                        String?
+	WAREHOUSE                     String?
+	BAY_NO                        String?
+	ROW_NO                        String?
+	TIER_NO                       String?
+	BIN_NO                        String?
+	AVAILABILITY_CONTROL_ID       String?
+	CREATE_DATE                   String?
+	ROTABLE_PART_POOL_ID          String?
+	PROJECT_ID                    String?
+	CATCH_QTY_IN_TRANSIT          String?
+	CATCH_QTY_ONHAND              String?
+	PART_OWNERSHIP                String?
+	OWNING_CUSTOMER_NO            String?
+	OWNING_VENDOR_NO              String?
+	ROWVERSION                    String?
+	ROWKEY                        String?
+	LATEST_TRANSACTION_ID         String?
+	EMPTY                         String?
+}
+
+model Hauptartikeldaten {
+    @@map("hauptartikeldaten")
+
+	PART_NO                       String  @id
+	DESCRIPTION                   String?
+	INFO_TEXT                     String?
+	STD_NAME_ID                   String?
+	UNIT_CODE                     String?
+	LOT_TRACKING_CODE             String?
+	SERIAL_RULE                   String?
+	SERIAL_TRACKING_CODE          String?
+	ENG_SERIAL_TRACKING_CODE      String?
+	PART_MAIN_GROUP               String?
+	CONFIGURABLE                  String?
+	CUST_WARRANTY_ID              String?
+	SUP_WARRANTY_ID               String?
+	CONDITION_CODE_USAGE          String?
+	SUB_LOT_RULE                  String?
+	LOT_QUANTITY_RULE             String?
+	POSITION_PART                 String?
+	INPUT_UNIT_MEAS_GROUP_ID      String?
+	CATCH_UNIT_ENABLED            String?
+	MULTILEVEL_TRACKING           String?
+	COMPONENT_LOT_RULE            String?
+	STOP_ARRIVAL_ISSUED_SERIAL    String?
+	WEIGHT_NET                    String?
+	UOM_FOR_WEIGHT_NET            String?
+	VOLUME_NET                    String?
+	UOM_FOR_VOLUME_NET            String?
+	FREIGHT_FACTOR                String?
+	ALLOW_AS_NOT_CONSUMED         String?
+	RECEIPT_ISSUE_SERIAL_TRACK    String?
+	STOP_NEW_SERIAL_IN_RMA        String?
+	TEXT_ID                       String?
+	ROWVERSION                    String?
+	ROWKEY                        String?
+	EMPTY                         String?
+	OBJVERSION                    String?
+	LANGUAGE_DESCRIPTION          String?
+	CATCH_UNIT_ENABLED_DB         String?
+	STOP_ARRIVAL_ISSUED_SERIAL_DB String?
+	OBJID                         String?
+	OBJKEY                        String?
+	COMPONENT_LOT_RULE_DB         String?
+	ALLOW_AS_NOT_CONSUMED_DB      String?
+	STOP_NEW_SERIAL_IN_RMA_DB     String?
+	POSITION_PART_DB              String?
+	RECEIPT_ISSUE_SERIAL_TRACK_DB String?
+	MULTILEVEL_TRACKING_DB        String?
+	LOT_TRACKING_CODE_DB          String?
+	ENG_SERIAL_TRACKING_CODE_DB   String?
+	LOT_QUANTITY_RULE_DB          String?
+	SUB_LOT_RULE_DB               String?
+	CONDITION_CODE_USAGE_DB       String?
+	SERIAL_RULE_DB                String?
+	CONFIGURABLE_DB               String?
+	SERIAL_TRACKING_CODE_DB       String?
+}
+
+model Locations {
+    @@map("locations")
+
+	LOCATION_ID                   String  @id
+	LOCATION_NAME                 String?
+	COMPANY_ID                    String?
+	LOCATION_COMPANY_NAME         String?
+}
+
+model MappingAttributeDescription {
+    @@map("mapping_attribute_description")
+
+    ATTRIBUTE                     String  @id
+	DESCRIPTION                   String?
+	DESCRIPTION_EN                String?
+	DESCRIPTION_FR                String?
+	DESCRIPTION_ES                String?
+}
+
+model MappingTechnicalClassDescription {
+    @@map("mapping_technical_class_description")
+
+    TECHNICAL_CLASS               String  @id
+	DESCRIPTION                   String?
+	DESCRIPTION_EN                String?
+	DESCRIPTION_FR                String?
+	DESCRIPTION_ES                String?
+}
+
+model Merkmalsdaten {
+   @@map("merkmalsdaten")
+
+    TECHNICAL_SPEC_NO             String  @id
+	TECHNICAL_CLASS               String?
+	ATTRIBUTE                     String?
+	ATTRIB_NUMBER                 String?
+	VALUE_NO                      String?
+	VALUE_TEXT                    String?
+	ALT_VALUE_NO                  String?
+	LOWER_LIMIT                   String?
+	UPPER_LIMIT                   String?
+	ALT_UNIT                      String?
+	INFO                          String?
+	ROWVERSION                    String?
+	ROWKEY                        String?
+	ROWTYPE                       String?
+	C_VALUE_ID                    String?
+	EMPTY                         String?
+}
+
+model ReferenzArtikelMerkmale {
+    @@map("referenz_artikel_merkmale")
+
+    TECHNICAL_SPEC_NO             String  @id
+	LU_NAME                       String?
+	KEY_REF                       String?
+	KEY_VALUE                     String?
+	TECHNICAL_CLASS               String?
+	OK_YES_NO                     String?
+	OK_SIGN                       String?
+	DT_OK                         String?
+	ROWVERSION                    String?
+	ROWKEY                        String?
+	EMPTY                         String?
+}
