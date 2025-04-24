@@ -11,7 +11,7 @@ export const referenzArtikelMerkmaleOps = {
     }),
     upsert: async (data: Prisma.ReferenzArtikelMerkmaleCreateInput) => {
         const exists = await prisma.referenzArtikelMerkmale.findUnique({
-            where: { TECHNICAL_SPEC_NO: data.TECHNICAL_SPEC_NO },
+            where: { TECHNICAL_SPEC_NO: data.TECHNICAL_SPEC_NO }
         });
 
         if (exists?.TECHNICAL_SPEC_NO) {

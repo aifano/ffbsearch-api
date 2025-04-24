@@ -11,7 +11,7 @@ export const mappingAttributeDescriptionOps = {
     }),
     upsert: async (data: Prisma.MappingAttributeDescriptionCreateInput) => {
         const exists = await prisma.mappingAttributeDescription.findUnique({
-            where: { ATTRIBUTE: data.ATTRIBUTE },
+            where: { ATTRIBUTE: data.ATTRIBUTE }
         });
 
         if (exists?.ATTRIBUTE) {

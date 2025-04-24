@@ -3,6 +3,8 @@ import { sendSyncRequest } from './utilities/request';
 describe('IFS Sync API Tests', () => {
     describe('artikelbestand', () => {
         const testData = {
+            ROWKEY: "TEST",
+
             PART_NO: "TEST",
             CONTRACT: "TEST",
             CONFIGURATION_ID: "TEST"
@@ -15,7 +17,7 @@ describe('IFS Sync API Tests', () => {
         });
 
         it('should fail to insert when required field is missing', async () => {
-            const { PART_NO, ...data } = testData;
+            const { ROWKEY, ...data } = testData;
             const res = await sendSyncRequest('artikelbestand', 'insert', data);
             expect(res.status).toBe(422);
         });
@@ -31,7 +33,7 @@ describe('IFS Sync API Tests', () => {
         it('should fail to update a non-existing record', async () => {
             const res = await sendSyncRequest('artikelbestand', 'update', {
                 ...testData,
-                PART_NO: 'NON_EXISTENT'
+                ROWKEY: 'NON_EXISTENT'
             });
             expect(res.status).toBe(404);
         });
@@ -46,7 +48,7 @@ describe('IFS Sync API Tests', () => {
 
         it('should delete the record successfully', async () => {
             const res = await sendSyncRequest('artikelbestand', 'delete', {
-                PART_NO: testData.PART_NO
+                ROWKEY: testData.ROWKEY
             });
             const body = await res.json();
             console.log(body);
@@ -55,13 +57,13 @@ describe('IFS Sync API Tests', () => {
 
         it('should fail to delete non-existing record', async () => {
             const res = await sendSyncRequest('artikelbestand', 'delete', {
-                PART_NO: 'NON_EXISTENT'
+                ROWKEY: 'NON_EXISTENT'
             });
             expect(res.status).toBe(404);
         });
 
         it('should fail to delete without primary key', async () => {
-            const { PART_NO, ...data } = testData;
+            const { ROWKEY, ...data } = testData;
             const res = await sendSyncRequest('artikelbestand', 'delete', data);
             expect(res.status).toBe(422);
         });
@@ -81,7 +83,7 @@ describe('IFS Sync API Tests', () => {
 
         it('should delete the record after upsert', async () => {
             const res = await sendSyncRequest('artikelbestand', 'delete', {
-                PART_NO: testData.PART_NO,
+                ROWKEY: testData.ROWKEY,
             });
             expect(res.status).toBe(200);
         });

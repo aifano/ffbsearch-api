@@ -51,8 +51,8 @@ const sync = async (
         const exists = await ops.upsert(data);
 
         return {
-          status: exists ? 201 : 200,
-          message: exists ? 'inserted' : 'updated',
+          status: exists ? 200 : 201,
+          message: exists ? 'updated' : 'inserted',
         };
       case 'delete':
         await ops.delete(data);

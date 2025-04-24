@@ -10,8 +10,9 @@ datasource db {
 
 model Artikelbestand {
     @@map("artikelbestand")
+	@@index([PART_NO])
 
-	PART_NO                       String  @id
+	PART_NO                       String?
 	CONTRACT                      String?
 	CONFIGURATION_ID              String?
 	LOCATION_NO                   String?
@@ -48,15 +49,16 @@ model Artikelbestand {
 	OWNING_CUSTOMER_NO            String?
 	OWNING_VENDOR_NO              String?
 	ROWVERSION                    String?
-	ROWKEY                        String?
+	ROWKEY                        String @id
 	LATEST_TRANSACTION_ID         String?
 	EMPTY                         String?
 }
 
 model Hauptartikeldaten {
     @@map("hauptartikeldaten")
+	@@index([PART_NO])
 
-	PART_NO                       String  @id
+	PART_NO                       String?
 	DESCRIPTION                   String?
 	INFO_TEXT                     String?
 	STD_NAME_ID                   String?
@@ -88,7 +90,7 @@ model Hauptartikeldaten {
 	STOP_NEW_SERIAL_IN_RMA        String?
 	TEXT_ID                       String?
 	ROWVERSION                    String?
-	ROWKEY                        String?
+	ROWKEY                        String @id
 	EMPTY                         String?
 	OBJVERSION                    String?
 	LANGUAGE_DESCRIPTION          String?
@@ -114,6 +116,7 @@ model Hauptartikeldaten {
 
 model Locations {
     @@map("locations")
+	@@index([LOCATION_ID])
 
 	LOCATION_ID                   String  @id
 	LOCATION_NAME                 String?
@@ -123,6 +126,7 @@ model Locations {
 
 model MappingAttributeDescription {
     @@map("mapping_attribute_description")
+	@@index([ATTRIBUTE])
 
     ATTRIBUTE                     String  @id
 	DESCRIPTION                   String?
@@ -133,6 +137,7 @@ model MappingAttributeDescription {
 
 model MappingTechnicalClassDescription {
     @@map("mapping_technical_class_description")
+	@@index([TECHNICAL_CLASS])
 
     TECHNICAL_CLASS               String  @id
 	DESCRIPTION                   String?
@@ -144,7 +149,7 @@ model MappingTechnicalClassDescription {
 model Merkmalsdaten {
    @@map("merkmalsdaten")
 
-    TECHNICAL_SPEC_NO             String  @id
+    TECHNICAL_SPEC_NO             String?
 	TECHNICAL_CLASS               String?
 	ATTRIBUTE                     String?
 	ATTRIB_NUMBER                 String?
@@ -156,7 +161,7 @@ model Merkmalsdaten {
 	ALT_UNIT                      String?
 	INFO                          String?
 	ROWVERSION                    String?
-	ROWKEY                        String?
+	ROWKEY                        String @id
 	ROWTYPE                       String?
 	C_VALUE_ID                    String?
 	EMPTY                         String?
@@ -164,6 +169,7 @@ model Merkmalsdaten {
 
 model ReferenzArtikelMerkmale {
     @@map("referenz_artikel_merkmale")
+	@@index([TECHNICAL_SPEC_NO])
 
     TECHNICAL_SPEC_NO             String  @id
 	LU_NAME                       String?

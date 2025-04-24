@@ -69,7 +69,7 @@ describe('IFS Sync API Tests', () => {
             expect(res.status).toBe(422);
         });
 
-        it.only('should create a new record via upsert', async () => {
+        it('should create a new record via upsert', async () => {
             const res = await sendSyncRequest('locations', 'upsert', testData);
             expect(res.status).toBe(201);
         });

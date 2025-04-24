@@ -11,7 +11,7 @@ export const mappingTechnicalClassDescriptionOps = {
     }),
     upsert: async (data: Prisma.MappingTechnicalClassDescriptionCreateInput) => {
         const exists = await prisma.mappingTechnicalClassDescription.findUnique({
-            where: { TECHNICAL_CLASS: data.TECHNICAL_CLASS },
+            where: { TECHNICAL_CLASS: data.TECHNICAL_CLASS }
         });
 
         if (exists?.TECHNICAL_CLASS) {
