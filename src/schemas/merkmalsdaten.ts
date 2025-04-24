@@ -9,11 +9,19 @@ export const merkmalsdatenOps = {
         where: { TECHNICAL_SPEC_NO: data.TECHNICAL_SPEC_NO },
         data
     }),
-    upsert: (data: Prisma.MerkmalsdatenCreateInput) => prisma.merkmalsdaten.upsert({
-        where: { TECHNICAL_SPEC_NO: data.TECHNICAL_SPEC_NO },
-        update: data,
-        create: data,
-    }),
+    upsert: async (data: Prisma.MerkmalsdatenCreateInput) => {
+        const exists = await prisma.merkmalsdaten.findUnique({
+            where: { TECHNICAL_SPEC_NO: data.TECHNICAL_SPEC_NO },
+        });
+
+        if (exists?.TECHNICAL_SPEC_NO) {
+            await merkmalsdatenOps.update(data);
+        } else {
+            await merkmalsdatenOps.insert(data);
+        }
+
+        return !!exists?.TECHNICAL_SPEC_NO;
+    },
     delete: (data: Prisma.MerkmalsdatenCreateInput) => prisma.merkmalsdaten.delete({
         where: { TECHNICAL_SPEC_NO: data.TECHNICAL_SPEC_NO },
     }),

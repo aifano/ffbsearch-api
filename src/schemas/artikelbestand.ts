@@ -9,11 +9,19 @@ export const artikelbestandOps = {
         where: { PART_NO: data.PART_NO },
         data
     }),
-    upsert: (data: Prisma.ArtikelbestandCreateInput) => prisma.artikelbestand.upsert({
-        where: { PART_NO: data.PART_NO },
-        update: data,
-        create: data,
-    }),
+    upsert: async (data: Prisma.ArtikelbestandCreateInput) => {
+        const exists = await prisma.artikelbestand.findUnique({
+            where: { PART_NO: data.PART_NO },
+        });
+
+        if (exists?.PART_NO) {
+            await artikelbestandOps.update(data);
+        } else {
+            await artikelbestandOps.insert(data);
+        }
+
+        return !!exists?.PART_NO;
+    },
     delete: (data: Prisma.ArtikelbestandCreateInput) => prisma.artikelbestand.delete({
         where: { PART_NO: data.PART_NO },
     }),

@@ -9,11 +9,19 @@ export const mappingAttributeDescriptionOps = {
         where: { ATTRIBUTE: data.ATTRIBUTE },
         data
     }),
-    upsert: (data: Prisma.MappingAttributeDescriptionCreateInput) => prisma.mappingAttributeDescription.upsert({
-        where: { ATTRIBUTE: data.ATTRIBUTE },
-        update: data,
-        create: data,
-    }),
+    upsert: async (data: Prisma.MappingAttributeDescriptionCreateInput) => {
+        const exists = await prisma.mappingAttributeDescription.findUnique({
+            where: { ATTRIBUTE: data.ATTRIBUTE },
+        });
+
+        if (exists?.ATTRIBUTE) {
+            await mappingAttributeDescriptionOps.update(data);
+        } else {
+            await mappingAttributeDescriptionOps.insert(data);
+        }
+
+        return !!exists?.ATTRIBUTE;
+    },
     delete: (data: Prisma.MappingAttributeDescriptionCreateInput) => prisma.mappingAttributeDescription.delete({
         where: { ATTRIBUTE: data.ATTRIBUTE },
     }),

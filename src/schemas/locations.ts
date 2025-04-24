@@ -9,11 +9,19 @@ export const locationsOps = {
         where: { LOCATION_ID: data.LOCATION_ID },
         data
     }),
-    upsert: (data: Prisma.LocationsCreateInput) => prisma.locations.upsert({
-        where: { LOCATION_ID: data.LOCATION_ID },
-        update: data,
-        create: data,
-    }),
+    upsert: async (data: Prisma.LocationsCreateInput) => {
+        const exists = await prisma.locations.findUnique({
+            where: { LOCATION_ID: data.LOCATION_ID }
+        });
+
+        if (exists?.LOCATION_ID) {
+            await locationsOps.update(data);
+        } else {
+            await locationsOps.insert(data);
+        }
+
+        return !!exists?.LOCATION_ID;
+    },
     delete: (data: Prisma.LocationsCreateInput) => prisma.locations.delete({
         where: { LOCATION_ID: data.LOCATION_ID },
     }),

@@ -68,5 +68,25 @@ describe('IFS Sync API Tests', () => {
             const res = await sendSyncRequest('locations', 'delete', data);
             expect(res.status).toBe(422);
         });
+
+        it.only('should create a new record via upsert', async () => {
+            const res = await sendSyncRequest('locations', 'upsert', testData);
+            expect(res.status).toBe(201);
+        });
+
+        it('should update an existing record via upsert', async () => {
+            const res = await sendSyncRequest('locations', 'upsert', {
+                ...testData,
+                COMPANY_ID: 'TEST2',
+            });
+            expect(res.status).toBe(200);
+        });
+
+        it('should delete the record after upsert', async () => {
+            const res = await sendSyncRequest('locations', 'delete', {
+                LOCATION_ID: testData.LOCATION_ID,
+            });
+            expect(res.status).toBe(200);
+        });
     });
 });

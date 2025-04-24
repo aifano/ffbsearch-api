@@ -68,5 +68,25 @@ describe('IFS Sync API Tests', () => {
             const res = await sendSyncRequest('mapping-attribute', 'delete', data);
             expect(res.status).toBe(422);
         });
+
+        it('should create a new record via upsert', async () => {
+            const res = await sendSyncRequest('mapping-attribute', 'upsert', testData);
+            expect(res.status).toBe(201);
+        });
+
+        it('should update an existing record via upsert', async () => {
+            const res = await sendSyncRequest('mapping-attribute', 'upsert', {
+                ...testData,
+                DESCRIPTION_EN: 'TEST2',
+            });
+            expect(res.status).toBe(200);
+        });
+
+        it('should delete the record after upsert', async () => {
+            const res = await sendSyncRequest('mapping-attribute', 'delete', {
+                ATTRIBUTE: testData.ATTRIBUTE,
+            });
+            expect(res.status).toBe(200);
+        });
     });
 });
