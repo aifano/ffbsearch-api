@@ -3,10 +3,18 @@ import { sendSyncRequest } from './utilities/request';
 describe('IFS Sync API Tests', () => {
     describe('referenzArtikelMerkmale', () => {
         const testData = {
+            ROWKEY: "TEST",
+
             TECHNICAL_SPEC_NO: "TEST",
             LU_NAME: "TEST",
-            KEY_REF: "TEST"
+            KEY_REF: "TEST",
         };
+
+        beforeAll(async () => {
+            await sendSyncRequest('referenz-artikel-merkmale', 'delete', {
+                ROWKEY: testData.ROWKEY
+            });
+        });
 
         it('should insert a record successfully', async () => {
             const { KEY_REF, ...data } = testData;
@@ -15,7 +23,7 @@ describe('IFS Sync API Tests', () => {
         });
 
         it('should fail to insert when required field is missing', async () => {
-            const { TECHNICAL_SPEC_NO, ...data } = testData;
+            const { ROWKEY, ...data } = testData;
             const res = await sendSyncRequest('referenz-artikel-merkmale', 'insert', data);
             expect(res.status).toBe(422);
         });
@@ -31,7 +39,7 @@ describe('IFS Sync API Tests', () => {
         it('should fail to update a non-existing record', async () => {
             const res = await sendSyncRequest('referenz-artikel-merkmale', 'update', {
                 ...testData,
-                TECHNICAL_SPEC_NO: 'NON_EXISTENT'
+                ROWKEY: 'NON_EXISTENT'
             });
             expect(res.status).toBe(404);
         });
@@ -46,20 +54,20 @@ describe('IFS Sync API Tests', () => {
 
         it('should delete the record successfully', async () => {
             const res = await sendSyncRequest('referenz-artikel-merkmale', 'delete', {
-                TECHNICAL_SPEC_NO: testData.TECHNICAL_SPEC_NO
+                ROWKEY: testData.ROWKEY
             });
             expect(res.status).toBe(200);
         });
 
         it('should fail to delete non-existing record', async () => {
             const res = await sendSyncRequest('referenz-artikel-merkmale', 'delete', {
-                TECHNICAL_SPEC_NO: 'NON_EXISTENT'
+                ROWKEY: 'NON_EXISTENT'
             });
             expect(res.status).toBe(404);
         });
 
         it('should fail to delete without primary key', async () => {
-            const { TECHNICAL_SPEC_NO, ...data } = testData;
+            const { ROWKEY, ...data } = testData;
             const res = await sendSyncRequest('referenz-artikel-merkmale', 'delete', data);
             expect(res.status).toBe(422);
         });
@@ -79,9 +87,23 @@ describe('IFS Sync API Tests', () => {
 
         it('should delete the record after upsert', async () => {
             const res = await sendSyncRequest('referenz-artikel-merkmale', 'delete', {
-                TECHNICAL_SPEC_NO: testData.TECHNICAL_SPEC_NO,
+                ROWKEY: testData.ROWKEY
             });
             expect(res.status).toBe(200);
+        });
+
+        async function cleanup() {
+            return await sendSyncRequest('artikelbestand', 'delete', {
+                ROWKEY: testData.ROWKEY
+            });
+        };
+
+        beforeAll(async () => {
+            await cleanup();
+        });
+
+        afterAll(async () => {
+            await cleanup();
         });
     });
 });

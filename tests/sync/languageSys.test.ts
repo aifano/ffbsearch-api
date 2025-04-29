@@ -1,48 +1,45 @@
 import { sendSyncRequest } from './utilities/request';
 
 describe('IFS Sync API Tests', () => {
-    describe('locations', () => {
+    describe('language_sys_tab', () => {
         const testData = {
-            LOCATION_ID: "TEST",
-            LOCATION_NAME: "TEST",
-            COMPANY_ID: "TEST"
+            ATTRIBUTE: "TEST",
+            LANG_CODE: "TEST",
+            PATH: "TEST",
+
+            BULK: "TEST"
         };
 
         it('should insert a record successfully', async () => {
-            const { COMPANY_ID, ...data } = testData;
-            const res = await sendSyncRequest('locations', 'insert', data);
+            const { BULK, ...data } = testData;
+            const res = await sendSyncRequest('language_sys_tab', 'insert', data);
             expect(res.status).toBe(201);
         });
 
-        it('should fail to insert duplicate record', async () => {
-            const res = await sendSyncRequest('locations', 'insert', testData);
-            expect(res.status).toBe(409);
-        });
-
         it('should fail to insert when required field is missing', async () => {
-            const { LOCATION_ID, ...data } = testData;
-            const res = await sendSyncRequest('locations', 'insert', data);
+            const { PATH, ...data } = testData;
+            const res = await sendSyncRequest('language_sys_tab', 'insert', data);
             expect(res.status).toBe(422);
         });
 
         it('should update the record successfully', async () => {
-            const res = await sendSyncRequest('locations', 'update', {
+            const res = await sendSyncRequest('language_sys_tab', 'update', {
                 ...testData,
-                COMPANY_ID: "TEST2"
+                BULK: "TEST2"
             });
             expect(res.status).toBe(200);
         });
 
         it('should fail to update a non-existing record', async () => {
-            const res = await sendSyncRequest('locations', 'update', {
+            const res = await sendSyncRequest('language_sys_tab', 'update', {
                 ...testData,
-                LOCATION_ID: 'NON_EXISTENT'
+                PATH: 'NON_EXISTENT'
             });
             expect(res.status).toBe(404);
         });
 
         it('should fail to insert when extra field is present', async () => {
-            const res = await sendSyncRequest('locations', 'insert', {
+            const res = await sendSyncRequest('language_sys_tab', 'insert', {
                 ...testData,
                 EXTRA_FIELD: 'unexpected'
             });
@@ -50,43 +47,57 @@ describe('IFS Sync API Tests', () => {
         });
 
         it('should delete the record successfully', async () => {
-            const res = await sendSyncRequest('locations', 'delete', {
-                LOCATION_ID: testData.LOCATION_ID
+            const res = await sendSyncRequest('language_sys_tab', 'delete', {
+                ATTRIBUTE: testData.ATTRIBUTE,
+                LANG_CODE: testData.LANG_CODE,
+                PATH: testData.PATH
             });
             expect(res.status).toBe(200);
         });
 
         it('should fail to delete non-existing record', async () => {
-            const res = await sendSyncRequest('locations', 'delete', {
-                LOCATION_ID: 'NON_EXISTENT'
-            });
+            const res = await cleanup();
             expect(res.status).toBe(404);
         });
 
         it('should fail to delete without primary key', async () => {
-            const { LOCATION_ID, ...data } = testData;
-            const res = await sendSyncRequest('locations', 'delete', data);
+            const { PATH, ...data } = testData;
+            const res = await sendSyncRequest('language_sys_tab', 'delete', data);
             expect(res.status).toBe(422);
         });
 
         it('should create a new record via upsert', async () => {
-            const res = await sendSyncRequest('locations', 'upsert', testData);
+            const res = await sendSyncRequest('language_sys_tab', 'upsert', testData);
             expect(res.status).toBe(201);
         });
 
         it('should update an existing record via upsert', async () => {
-            const res = await sendSyncRequest('locations', 'upsert', {
+            const res = await sendSyncRequest('language_sys_tab', 'upsert', {
                 ...testData,
-                COMPANY_ID: 'TEST2',
+                BULK: 'TEST2'
             });
             expect(res.status).toBe(200);
         });
 
         it('should delete the record after upsert', async () => {
-            const res = await sendSyncRequest('locations', 'delete', {
-                LOCATION_ID: testData.LOCATION_ID,
-            });
+            const res = await cleanup();
             expect(res.status).toBe(200);
+        });
+
+        async function cleanup() {
+            return await sendSyncRequest('language_sys_tab', 'delete', {
+                ATTRIBUTE: testData.ATTRIBUTE,
+                LANG_CODE: testData.LANG_CODE,
+                PATH: testData.PATH
+            });
+        };
+
+        beforeAll(async () => {
+            await cleanup();
+        });
+
+        afterAll(async () => {
+            await cleanup();
         });
     });
 });

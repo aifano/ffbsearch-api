@@ -6,12 +6,16 @@ export const artikelbestandOps = {
         data
     }),
     update: (data: Prisma.ArtikelbestandCreateInput) => prisma.artikelbestand.update({
-        where: { ROWKEY: data.ROWKEY },
+        where: {
+            ROWKEY: data.ROWKEY
+        },
         data
     }),
     upsert: async (data: Prisma.ArtikelbestandCreateInput) => {
         const exists = await prisma.artikelbestand.findUnique({
-            where: { ROWKEY: data.ROWKEY }
+            where: {
+                ROWKEY: data.ROWKEY
+            }
         });
 
         if (exists?.ROWKEY) {
@@ -23,6 +27,8 @@ export const artikelbestandOps = {
         return !!exists?.ROWKEY;
     },
     delete: (data: Prisma.ArtikelbestandCreateInput) => prisma.artikelbestand.delete({
-        where: { ROWKEY: data.ROWKEY },
-    }),
+        where: {
+            ROWKEY: data.ROWKEY
+        },
+    })
 };

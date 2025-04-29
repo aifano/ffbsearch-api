@@ -4,9 +4,7 @@ import { handlePrismaSync } from '../services/syncService';
 const allowedTables = [
   'artikelbestand',
   'hauptartikeldaten',
-  'locations',
-  'mapping-attribute',
-  'mapping-techclass',
+  'language_sys_tab',
   'merkmalsdaten',
   'referenz-artikel-merkmale',
 ];

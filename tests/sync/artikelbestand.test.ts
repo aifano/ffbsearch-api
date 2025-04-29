@@ -47,11 +47,7 @@ describe('IFS Sync API Tests', () => {
         });
 
         it('should delete the record successfully', async () => {
-            const res = await sendSyncRequest('artikelbestand', 'delete', {
-                ROWKEY: testData.ROWKEY
-            });
-            const body = await res.json();
-            console.log(body);
+            const res = await cleanup();
             expect(res.status).toBe(200);
         });
 
@@ -82,10 +78,22 @@ describe('IFS Sync API Tests', () => {
         });
 
         it('should delete the record after upsert', async () => {
-            const res = await sendSyncRequest('artikelbestand', 'delete', {
-                ROWKEY: testData.ROWKEY,
-            });
+            const res = await cleanup();
             expect(res.status).toBe(200);
+        });
+
+        async function cleanup() {
+            return await sendSyncRequest('artikelbestand', 'delete', {
+                ROWKEY: testData.ROWKEY
+            });
+        };
+
+        beforeAll(async () => {
+            await cleanup();
+        });
+
+        afterAll(async () => {
+            await cleanup();
         });
     });
 });

@@ -1,25 +1,20 @@
 import { artikelbestandOps } from '../schemas/artikelbestand';
 import { hauptartikeldatenOps } from '../schemas/hauptartikeldaten';
-import { locationsOps } from '../schemas/locations';
-import { mappingAttributeDescriptionOps } from '../schemas/mappingAttributeDescription';
-import { mappingTechnicalClassDescriptionOps } from '../schemas/mappingTechnicalClassDescription';
+import { languageSysTabOps } from '../schemas/languageSysTab';
 import { merkmalsdatenOps } from '../schemas/merkmalsdaten';
 import { referenzArtikelMerkmaleOps } from '../schemas/referenzArtikelMerkmale';
 import { Prisma } from '@prisma/client';
 
 
 export const handlePrismaSync = async (table: string, action: string, data: any) => {
+  console.log(`Start ${action} for table ${table}`);
   switch (table) {
     case 'artikelbestand':
       return await sync(artikelbestandOps, action, data);
     case 'hauptartikeldaten':
       return await sync(hauptartikeldatenOps, action, data);
-    case 'locations':
-      return await sync(locationsOps, action, data);
-    case 'mapping-attribute':
-      return await sync(mappingAttributeDescriptionOps, action, data);
-    case 'mapping-techclass':
-      return await sync(mappingTechnicalClassDescriptionOps, action, data);
+    case 'language_sys_tab':
+      return await sync(languageSysTabOps, action, data);
     case 'merkmalsdaten':
       return await sync(merkmalsdatenOps, action, data);
     case 'referenz-artikel-merkmale':
@@ -61,6 +56,7 @@ const sync = async (
         throw new Error('Unknown action');
     }
   } catch (error) {
+    console.error('Error during sync', {data, error});
     const mapped = mapPrismaError(error);
     return { status: mapped.status, message: mapped.message };
   }

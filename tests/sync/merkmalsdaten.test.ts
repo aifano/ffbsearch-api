@@ -85,5 +85,19 @@ describe('IFS Sync API Tests', () => {
             });
             expect(res.status).toBe(200);
         });
+
+        async function cleanup() {
+            return await sendSyncRequest('artikelbestand', 'delete', {
+                ROWKEY: testData.ROWKEY
+            });
+        };
+
+        beforeAll(async () => {
+            await cleanup();
+        });
+
+        afterAll(async () => {
+            await cleanup();
+        });
     });
 });

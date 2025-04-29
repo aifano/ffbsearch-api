@@ -6,23 +6,29 @@ export const referenzArtikelMerkmaleOps = {
         data
     }),
     update: (data: Prisma.ReferenzArtikelMerkmaleCreateInput) => prisma.referenzArtikelMerkmale.update({
-        where: { TECHNICAL_SPEC_NO: data.TECHNICAL_SPEC_NO },
+        where: {
+            ROWKEY: data.ROWKEY
+        },
         data
     }),
     upsert: async (data: Prisma.ReferenzArtikelMerkmaleCreateInput) => {
         const exists = await prisma.referenzArtikelMerkmale.findUnique({
-            where: { TECHNICAL_SPEC_NO: data.TECHNICAL_SPEC_NO }
+            where: {
+                ROWKEY: data.ROWKEY
+            }
         });
 
-        if (exists?.TECHNICAL_SPEC_NO) {
+        if (exists?.ROWKEY) {
             await referenzArtikelMerkmaleOps.update(data);
         } else {
             await referenzArtikelMerkmaleOps.insert(data);
         }
 
-        return !!exists?.TECHNICAL_SPEC_NO;
+        return !!exists?.ROWKEY;
     },
     delete: (data: Prisma.ReferenzArtikelMerkmaleCreateInput) => prisma.referenzArtikelMerkmale.delete({
-        where: { TECHNICAL_SPEC_NO: data.TECHNICAL_SPEC_NO },
+        where: {
+            ROWKEY: data.ROWKEY
+        }
     }),
 };

@@ -171,7 +171,7 @@ model ReferenzArtikelMerkmale {
     @@map("referenz_artikel_merkmale")
 	@@index([TECHNICAL_SPEC_NO])
 
-    TECHNICAL_SPEC_NO             String  @id
+    TECHNICAL_SPEC_NO             String?
 	LU_NAME                       String?
 	KEY_REF                       String?
 	KEY_VALUE                     String?
@@ -180,6 +180,24 @@ model ReferenzArtikelMerkmale {
 	OK_SIGN                       String?
 	DT_OK                         String?
 	ROWVERSION                    String?
-	ROWKEY                        String?
+	ROWKEY                        String @id
 	EMPTY                         String?
+}
+
+model LanguageSysTab {
+	@@map("language_sys_tab")
+	@@id([ATTRIBUTE, LANG_CODE, PATH])
+
+	MAIN_TYPE                     String?
+	TYPE                          String?
+	PATH                          String
+	ATTRIBUTE                     String
+	LANG_CODE                     String
+	MODULE                        String?
+	TEXT                          String?
+	INSTALLATION_TEXT             String?
+	SYSTEM_DEFINED                String?
+	BULK                          String?
+	ROWVERSION                    String?
+	LAYER                         String?
 }
