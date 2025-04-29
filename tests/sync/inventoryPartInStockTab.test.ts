@@ -1,9 +1,9 @@
 import { generateTests } from './utilities/syncTestFactory';
 
 describe('IFS Sync API Tests', () => {
-    const tableName = 'language_sys_tab';
+    const tableName = 'inventory_part_in_stock_tab';
 
     describe(tableName, () => {
-        generateTests(tableName, ["ATTRIBUTE", "LANG_CODE", "PATH"], [], "BULK");
+        generateTests(tableName, ["ROWKEY"], ["PART_NO", "CONTRACT"], "CONFIGURATION_ID");
     });
 });

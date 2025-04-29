@@ -116,7 +116,7 @@ abc
 ## Custom-Events / Event-Actions
 Unter `Solution manager / User Interface / Custom Objects / New Custom Event` sollen die folgenden `Custom Objects`, sowie die dazugehörigen `Event Actions` erstellt werden.
 
-### InventoryPartInStock <-> artikelbestand
+### InventoryPartInStockTab <-> artikelbestand
 * Custom-Event / Event-ID:
   * Upsert: `C_NXS_InvPartInStk_Upsert`
   * Delete: `C_NXS_InvPartInStk_Delete`
@@ -134,107 +134,144 @@ Unter `Solution manager / User Interface / Custom Objects / New Custom Event` so
   * Upsert: `C_NXS_InvPartInStk_Upsert`
   * Delete: `C_NXS_InvPartInStk_Delete`
 * Event-Action / Action Description: `Updatet die NXSearch Datenbank`
-* Event-Action / REST End Point: `https://api.ffbsearch.aifano.com/ifs-sync/artikelbestand`
+* Event-Action / REST End Point: `https://api.ffbsearch.aifano.com/ifs-sync/artikelbestand` oder `https://api.ffbsearch.aifano.com/ifs-sync/inventory_part_in_stock_tab`
 * Event-Action / Method: `POST`
 * Event-Action / Sender: `NXS_REST_SENDER`
 * Event-Action / Authenication: `None`
 * Event-Action / Additional Header Parameters: `apikey: apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmciOnsiaWQiOiJvcmdfMnc4WWU3eEJUYkNwaFVDdWJHeG9PV2x5R2ROIn0sInR5cGUiOiJpZnMuc3VwcGxpZXIifQ._Q-97RIFnWGb9fnEDfRUPAL8NurYuK6SunYZ7OdPXTg`
 * Event-Action / Body:
-```json
-{
-  "action": "upsert" | "delete",
-  "data": {
-    "PART_NO": "&NEW:PART_NO",
-    "CONTRACT": "&NEW:CONTRACT",
-    "CONFIGURATION_ID": "&NEW:CONFIGURATION_ID",
-    "LOCATION_NO": "&NEW:LOCATION_NO",
-    "LOT_BATCH_NO": "&NEW:LOT_BATCH_NO",
-    "SERIAL_NO": "&NEW:SERIAL_NO",
-    "ENG_CHG_LEVEL": "&NEW:ENG_CHG_LEVEL",
-    "WAIV_DEV_REJ_NO": "&NEW:WAIV_DEV_REJ_NO",
-    "ACTIVITY_SEQ": "&NEW:ACTIVITY_SEQ",
-    "HANDLING_UNIT_ID": "&NEW:HANDLING_UNIT_ID",
-    "AVG_UNIT_TRANSIT_COST": "&NEW:AVG_UNIT_TRANSIT_COST",
-    "COUNT_VARIANCE": "&NEW:COUNT_VARIANCE",
-    "EXPIRATION_DATE": "&NEW:EXPIRATION_DATE",
-    "FREEZE_FLAG": "&NEW:FREEZE_FLAG",
-    "LAST_ACTIVITY_DATE": "&NEW:LAST_ACTIVITY_DATE",
-    "LAST_COUNT_DATE": "&NEW:LAST_COUNT_DATE",
-    "LOCATION_TYPE": "&NEW:LOCATION_TYPE",
-    "QTY_IN_TRANSIT": "&NEW:QTY_IN_TRANSIT",
-    "QTY_ONHAND": "&NEW:QTY_ONHAND",
-    "QTY_RESERVED": "&NEW:QTY_RESERVED",
-    "RECEIPT_DATE": "&NEW:RECEIPT_DATE",
-    "SOURCE": "&NEW:SOURCE",
-    "WAREHOUSE": "&NEW:WAREHOUSE",
-    "BAY_NO": "&NEW:BAY_NO",
-    "ROW_NO": "&NEW:ROW_NO",
-    "TIER_NO": "&NEW:TIER_NO",
-    "BIN_NO": "&NEW:BIN_NO",
-    "AVAILABILITY_CONTROL_ID": "&NEW:AVAILABILITY_CONTROL_ID",
-    "CREATE_DATE": "&NEW:CREATE_DATE",
-    "ROTABLE_PART_POOL_ID": "&NEW:ROTABLE_PART_POOL_ID",
-    "PROJECT_ID": "&NEW:PROJECT_ID",
-    "CATCH_QTY_IN_TRANSIT": "&NEW:CATCH_QTY_IN_TRANSIT",
-    "CATCH_QTY_ONHAND": "&NEW:CATCH_QTY_ONHAND",
-    "PART_OWNERSHIP": "&NEW:PART_OWNERSHIP",
-    "OWNING_CUSTOMER_NO": "&NEW:OWNING_CUSTOMER_NO",
-    "OWNING_VENDOR_NO": "&NEW:OWNING_VENDOR_NO",
-    "ROWVERSION": "&NEW:ROWVERSION",
-    "ROWKEY": "&NEW:ROWKEY",
-    "LATEST_TRANSACTION_ID": "&NEW:LATEST_TRANSACTION_ID"
-  }
-}
-```
-Gedachte Version:
-```json
-{
-  "action": "upsert" | "delete",
-  "data": {
-    "PART_NO": "&NEW:PART_NO",
-    "CONTRACT": "&NEW:CONTRACT",
-    "CONFIGURATION_ID": "&NEW:CONFIGURATION_ID",
-    "LOCATION_NO": "&NEW:LOCATION_NO",
-    "LOT_BATCH_NO": "&NEW:LOT_BATCH_NO",
-    "SERIAL_NO": "&NEW:SERIAL_NO",
-    "ENG_CHG_LEVEL": "&NEW:ENG_CHG_LEVEL",
-    "WAIV_DEV_REJ_NO": "&NEW:WAIV_DEV_REJ_NO",
-    "ACTIVITY_SEQ": "&NEW:ACTIVITY_SEQ",
-    "HANDLING_UNIT_ID": "&NEW:HANDLING_UNIT_ID",
-    "AVG_UNIT_TRANSIT_COST": "&NEW:AVG_UNIT_TRANSIT_COST",
-    "COUNT_VARIANCE": "&NEW:COUNT_VARIANCE",
-    "EXPIRATION_DATE": "&NEW:EXPIRATION_DATE",
-    "FREEZE_FLAG": "&NEW:FREEZE_FLAG",
-    "LAST_ACTIVITY_DATE": "&NEW:LAST_ACTIVITY_DATE",
-    "LAST_COUNT_DATE": "&NEW:LAST_COUNT_DATE",
-    "LOCATION_TYPE": "&NEW:LOCATION_TYPE",
-    "QTY_IN_TRANSIT": "&NEW:QTY_IN_TRANSIT",
-    "QTY_ONHAND": "&NEW:QTY_ONHAND",
-    "QTY_RESERVED": "&NEW:QTY_RESERVED",
-    "RECEIPT_DATE": "&NEW:RECEIPT_DATE",
-    "SOURCE": "&NEW:SOURCE",
-    "WAREHOUSE": "&NEW:WAREHOUSE",
-    "BAY_NO": "&NEW:BAY_NO",
-    "ROW_NO": "&NEW:ROW_NO",
-    "TIER_NO": "&NEW:TIER_NO",
-    "BIN_NO": "&NEW:BIN_NO",
-    "AVAILABILITY_CONTROL_ID": "&NEW:AVAILABILITY_CONTROL_ID",
-    "CREATE_DATE": "&NEW:CREATE_DATE",
-    "ROTABLE_PART_POOL_ID": "&NEW:ROTABLE_PART_POOL_ID",
-    "PROJECT_ID": "&NEW:PROJECT_ID",
-    "CATCH_QTY_IN_TRANSIT": "&NEW:CATCH_QTY_IN_TRANSIT",
-    "CATCH_QTY_ONHAND": "&NEW:CATCH_QTY_ONHAND",
-    "PART_OWNERSHIP": "&NEW:PART_OWNERSHIP",
-    "OWNING_CUSTOMER_NO": "&NEW:OWNING_CUSTOMER_NO",
-    "OWNING_VENDOR_NO": "&NEW:OWNING_VENDOR_NO",
-    "ROWVERSION": "&NEW:ROWVERSION",
-    "ROWKEY": "&NEW:ROWKEY",
-    "LATEST_TRANSACTION_ID": "&NEW:LATEST_TRANSACTION_ID"
-  }
-}
-```
+    <details>
+    <summary>Upsert</summary>
 
-### PartCatalog <-> hauptartikeldaten
+    ```json
+    {
+    "action": "upsert",
+    "data": {
+        "ACTIVITY_SEQ": "&NEW:ACTIVITY_SEQ",
+        "AVAILABILITY_CONTROL_ID": "&NEW:AVAILABILITY_CONTROL_ID",
+        "AVG_UNIT_TRANSIT_COST": "&NEW:AVG_UNIT_TRANSIT_COST",
+        "BAY_NO": "&NEW:BAY_NO",
+        "BIN_NO": "&NEW:BIN_NO",
+        "CATCH_QTY_IN_TRANSIT": "&NEW:CATCH_QTY_IN_TRANSIT",
+        "CATCH_QTY_ONHAND": "&NEW:CATCH_QTY_ONHAND",
+        "CONFIGURATION_ID": "&NEW:CONFIGURATION_ID",
+        "CONTRACT": "&NEW:CONTRACT",
+        "COUNT_VARIANCE": "&NEW:COUNT_VARIANCE",
+        "CREATE_DATE": "&NEW:CREATE_DATE",
+        "ENG_CHG_LEVEL": "&NEW:ENG_CHG_LEVEL",
+        "EXPIRATION_DATE": "&NEW:EXPIRATION_DATE",
+        "FREEZE_FLAG": "&NEW:FREEZE_FLAG",
+        "HANDLING_UNIT_ID": "&NEW:HANDLING_UNIT_ID",
+        "LAST_ACTIVITY_DATE": "&NEW:LAST_ACTIVITY_DATE",
+        "LAST_COUNT_DATE": "&NEW:LAST_COUNT_DATE",
+        "LATEST_TRANSACTION_ID": "&NEW:LATEST_TRANSACTION_ID",
+        "LOCATION_NO": "&NEW:LOCATION_NO",
+        "LOCATION_TYPE": "&NEW:LOCATION_TYPE",
+        "LOT_BATCH_NO": "&NEW:LOT_BATCH_NO",
+        "OWNING_CUSTOMER_NO": "&NEW:OWNING_CUSTOMER_NO",
+        "OWNING_VENDOR_NO": "&NEW:OWNING_VENDOR_NO",
+        "PART_NO": "&NEW:PART_NO",
+        "PART_OWNERSHIP": "&NEW:PART_OWNERSHIP",
+        "PROJECT_ID": "&NEW:PROJECT_ID",
+        "QTY_IN_TRANSIT": "&NEW:QTY_IN_TRANSIT",
+        "QTY_ONHAND": "&NEW:QTY_ONHAND",
+        "QTY_RESERVED": "&NEW:QTY_RESERVED",
+        "RECEIPT_DATE": "&NEW:RECEIPT_DATE",
+        "ROTABLE_PART_POOL_ID": "&NEW:ROTABLE_PART_POOL_ID",
+        "ROW_NO": "&NEW:ROW_NO",
+        "ROWKEY": "&NEW:ROWKEY",
+        "ROWVERSION": "&NEW:ROWVERSION",
+        "SERIAL_NO": "&NEW:SERIAL_NO",
+        "SOURCE": "&NEW:SOURCE",
+        "TIER_NO": "&NEW:TIER_NO",
+        "WAIV_DEV_REJ_NO": "&NEW:WAIV_DEV_REJ_NO",
+        "WAREHOUSE": "&NEW:WAREHOUSE"
+    }
+    }
+    ```
+
+    </details>
+    <details>
+    <summary>Delete</summary>
+
+    ```json
+    {
+        "action": "delete",
+        "data": {
+            "ROWKEY": "&NEW:ROWKEY"
+        }
+    }
+    ```
+
+    </details>
+
+### LanguageSysTab <-> language_sys_tab
+* Custom-Event / Event-ID:
+  * Upsert: `C_NXS_LanguageSys_Upsert`
+  * Delete: `C_NXS_LanguageSys_Delete`
+* Custom-Event / Descripton: `Wird ausgelöst, wenn Lagerbestandsdaten erstellt, aktualisiert, oder gelöscht werden`
+* Custom-Event / Event Enabled: `True`
+* Custom-Event / Logical Unit: ``
+* Custom-Event / Table: `LANGUAGE_SYS_TAB`
+* Custom-Event / Fire When:
+  * Upsert: `New objects are created` und `Objects are changed`
+  * Delete: `Object are removed`
+* Custom-Event / Fire before or afer object is changed: `After`
+* Custom-Event / Select attributes: Alle `New Value`
+* Event-Action / Action Type: `REST Call`
+* Event-Action / Perform upon Event:
+  * Upsert: `C_NXS_LanguageSys_Upsert`
+  * Delete: `C_NXS_LanguageSys_Delete`
+* Event-Action / Action Description: `Updatet die NXSearch Datenbank`
+* Event-Action / REST End Point: `https://api.ffbsearch.aifano.com/ifs-sync/language_sys_tab`
+* Event-Action / Method: `POST`
+* Event-Action / Sender: `NXS_REST_SENDER`
+* Event-Action / Authenication: `None`
+* Event-Action / Additional Header Parameters: `apikey: apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmciOnsiaWQiOiJvcmdfMnc4WWU3eEJUYkNwaFVDdWJHeG9PV2x5R2ROIn0sInR5cGUiOiJpZnMuc3VwcGxpZXIifQ._Q-97RIFnWGb9fnEDfRUPAL8NurYuK6SunYZ7OdPXTg`
+* Event-Action / Body:
+    <details>
+    <summary>Upsert</summary>
+
+    ```json
+    {
+    "action": "upsert",
+    "data": {
+        "MAIN_TYPE": "&NEW:MAIN_TYPE",
+        "TYPE": "&NEW:TYPE",
+        "PATH": "&NEW:PATH",
+        "ATTRIBUTE": "&NEW:ATTRIBUTE",
+        "LANG_CODE": "&NEW:LANG_CODE",
+        "MODULE": "&NEW:MODULE",
+        "TEXT": "&NEW:TEXT",
+        "INSTALLATION_TEXT": "&NEW:INSTALLATION_TEXT",
+        "SYSTEM_DEFINED": "&NEW:SYSTEM_DEFINED",
+        "BULK": "&NEW:BULK",
+        "ROWVERSION": "&NEW:ROWVERSION",
+        "LAYER": "&NEW:LAYER"
+    }
+    }
+    ```
+
+    </details>
+    <details>
+    <summary>Delete</summary>
+
+    ```json
+    {
+        "action": "delete",
+        "data": {
+            "PATH": "&NEW:PATH",
+            "ATTRIBUTE": "&NEW:ATTRIBUTE",
+            "LANG_CODE": "&NEW:LANG_CODE"
+        }
+    }
+    ```
+
+    </details>
+
+
+
+### PartCatalogTab <-> hauptartikeldaten
 * Custom-Event / Event-ID:
   * Upsert: `C_NXS_PartCatalog_Upsert`
   * Delete: `C_NXS_PartCatalog_Delete`
@@ -252,122 +289,79 @@ Gedachte Version:
   * Upsert: `C_NXS_PartCatalog_Upsert`
   * Delete: `C_NXS_PartCatalog_Delete`
 * Event-Action / Action Description: `Updatet die NXSearch Datenbank`
-* Event-Action / REST End Point: `https://api.ffbsearch.aifano.com/ifs-sync/hauptartikeldaten`
+* Event-Action / REST End Point: `https://api.ffbsearch.aifano.com/ifs-sync/hauptartikeldaten` oder `https://api.ffbsearch.aifano.com/ifs-sync/part_catalog_tab`
 * Event-Action / Method: `POST`
 * Event-Action / Sender: `NXS_REST_SENDER`
 * Event-Action / Authenication: `None`
 * Event-Action / Additional Header Parameters: `apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmciOnsiaWQiOiJvcmdfMnc4WWU3eEJUYkNwaFVDdWJHeG9PV2x5R2ROIn0sInR5cGUiOiJpZnMuc3VwcGxpZXIifQ._Q-97RIFnWGb9fnEDfRUPAL8NurYuK6SunYZ7OdPXTg`
 * Event-Action / Body:
-```json
-{
-  "action": "upsert" | "delete",
-  "data": {
-    "PART_NO": "&NEW:PART_NO",
-    "DESCRIPTION": "&NEW:DESCRIPTION",
-    "INFO_TEXT": "&NEW:INFO_TEXT",
-    "STD_NAME_ID": "&NEW:STD_NAME_ID",
-    "UNIT_CODE": "&NEW:UNIT_CODE",
-    "LOT_TRACKING_CODE": "&NEW:LOT_TRACKING_CODE",
-    "SERIAL_RULE": "&NEW:SERIAL_RULE",
-    "SERIAL_TRACKING_CODE": "&NEW:SERIAL_TRACKING_CODE",
-    "ENG_SERIAL_TRACKING_CODE": "&NEW:ENG_SERIAL_TRACKING_CODE",
-    "PART_MAIN_GROUP": "&NEW:PART_MAIN_GROUP",
-    "CONFIGURABLE": "&NEW:CONFIGURABLE",
-    "CUST_WARRANTY_ID": "&NEW:CUST_WARRANTY_ID",
-    "SUP_WARRANTY_ID": "&NEW:SUP_WARRANTY_ID",
-    "CONDITION_CODE_USAGE": "&NEW:CONDITION_CODE_USAGE",
-    "SUB_LOT_RULE": "&NEW:SUB_LOT_RULE",
-    "LOT_QUANTITY_RULE": "&NEW:LOT_QUANTITY_RULE",
-    "POSITION_PART": "&NEW:POSITION_PART",
-    "INPUT_UNIT_MEAS_GROUP_ID": "&NEW:INPUT_UNIT_MEAS_GROUP_ID",
-    "CATCH_UNIT_ENABLED": "&NEW:CATCH_UNIT_ENABLED",
-    "MULTILEVEL_TRACKING": "&NEW:MULTILEVEL_TRACKING",
-    "COMPONENT_LOT_RULE": "&NEW:COMPONENT_LOT_RULE",
-    "STOP_ARRIVAL_ISSUED_SERIAL": "&NEW:STOP_ARRIVAL_ISSUED_SERIAL",
-    "WEIGHT_NET": "&NEW:WEIGHT_NET",
-    "UOM_FOR_WEIGHT_NET": "&NEW:UOM_FOR_WEIGHT_NET",
-    "VOLUME_NET": "&NEW:VOLUME_NET",
-    "UOM_FOR_VOLUME_NET": "&NEW:UOM_FOR_VOLUME_NET",
-    "FREIGHT_FACTOR": "&NEW:FREIGHT_FACTOR",
-    "ALLOW_AS_NOT_CONSUMED": "&NEW:ALLOW_AS_NOT_CONSUMED",
-    "RECEIPT_ISSUE_SERIAL_TRACK": "&NEW:RECEIPT_ISSUE_SERIAL_TRACK",
-    "STOP_NEW_SERIAL_IN_RMA": "&NEW:STOP_NEW_SERIAL_IN_RMA",
-    "TEXT_ID": "&NEW:TEXT_ID$",
-    "ROWVERSION": "&NEW:ROWVERSION",
-    "ROWKEY": "&NEW:ROWKEY"
-  }
-}
-```
-Gedachte Version:
-```json
-{
-  "action": "upsert" | "delete",
-  "data": {
-    "PART_NO": "&NEW:PART_NO",
-    "DESCRIPTION": "&NEW:DESCRIPTION",
-    "INFO_TEXT": "&NEW:INFO_TEXT",
-    "STD_NAME_ID": "&NEW:STD_NAME_ID",
-    "UNIT_CODE": "&NEW:UNIT_CODE",
-    "LOT_TRACKING_CODE": "&NEW:LOT_TRACKING_CODE",
-    "SERIAL_RULE": "&NEW:SERIAL_RULE",
-    "SERIAL_TRACKING_CODE": "&NEW:SERIAL_TRACKING_CODE",
-    "ENG_SERIAL_TRACKING_CODE": "&NEW:ENG_SERIAL_TRACKING_CODE",
-    "PART_MAIN_GROUP": "&NEW:PART_MAIN_GROUP",
-    "CONFIGURABLE": "&NEW:CONFIGURABLE",
-    "CUST_WARRANTY_ID": "&NEW:CUST_WARRANTY_ID",
-    "SUP_WARRANTY_ID": "&NEW:SUP_WARRANTY_ID",
-    "CONDITION_CODE_USAGE": "&NEW:CONDITION_CODE_USAGE",
-    "SUB_LOT_RULE": "&NEW:SUB_LOT_RULE",
-    "LOT_QUANTITY_RULE": "&NEW:LOT_QUANTITY_RULE",
-    "POSITION_PART": "&NEW:POSITION_PART",
-    "INPUT_UNIT_MEAS_GROUP_ID": "&NEW:INPUT_UNIT_MEAS_GROUP_ID",
-    "CATCH_UNIT_ENABLED": "&NEW:CATCH_UNIT_ENABLED",
-    "MULTILEVEL_TRACKING": "&NEW:MULTILEVEL_TRACKING",
-    "COMPONENT_LOT_RULE": "&NEW:COMPONENT_LOT_RULE",
-    "STOP_ARRIVAL_ISSUED_SERIAL": "&NEW:STOP_ARRIVAL_ISSUED_SERIAL",
-    "WEIGHT_NET": "&NEW:WEIGHT_NET",
-    "UOM_FOR_WEIGHT_NET": "&NEW:UOM_FOR_WEIGHT_NET",
-    "VOLUME_NET": "&NEW:VOLUME_NET",
-    "UOM_FOR_VOLUME_NET": "&NEW:UOM_FOR_VOLUME_NET",
-    "FREIGHT_FACTOR": "&NEW:FREIGHT_FACTOR",
-    "ALLOW_AS_NOT_CONSUMED": "&NEW:ALLOW_AS_NOT_CONSUMED",
-    "RECEIPT_ISSUE_SERIAL_TRACK": "&NEW:RECEIPT_ISSUE_SERIAL_TRACK",
-    "STOP_NEW_SERIAL_IN_RMA": "&NEW:STOP_NEW_SERIAL_IN_RMA",
-    "TEXT_ID": "&NEW:TEXT_ID",
-    "ROWVERSION": "&NEW:ROWVERSION",
-    "ROWKEY": "&NEW:ROWKEY",
-    "OBJVERSION": "&NEW:OBJVERSION",
-    "LANGUAGE_DESCRIPTION": "&NEW:LANGUAGE_DESCRIPTION",
-    "CATCH_UNIT_ENABLED_DB": "&NEW:CATCH_UNIT_ENABLED_DB",
-    "STOP_ARRIVAL_ISSUED_SERIAL_DB": "&NEW:STOP_ARRIVAL_ISSUED_SERIAL_DB",
-    "OBJID": "&NEW:OBJID",
-    "OBJKEY": "&NEW:OBJKEY",
-    "COMPONENT_LOT_RULE_DB": "&NEW:COMPONENT_LOT_RULE_DB",
-    "ALLOW_AS_NOT_CONSUMED_DB": "&NEW:ALLOW_AS_NOT_CONSUMED_DB",
-    "STOP_NEW_SERIAL_IN_RMA_DB": "&NEW:STOP_NEW_SERIAL_IN_RMA_DB",
-    "POSITION_PART_DB": "&NEW:POSITION_PART_DB",
-    "RECEIPT_ISSUE_SERIAL_TRACK_DB": "&NEW:RECEIPT_ISSUE_SERIAL_TRACK_DB",
-    "MULTILEVEL_TRACKING_DB": "&NEW:MULTILEVEL_TRACKING_DB",
-    "LOT_TRACKING_CODE_DB": "&NEW:LOT_TRACKING_CODE_DB",
-    "ENG_SERIAL_TRACKING_CODE_DB": "&NEW:ENG_SERIAL_TRACKING_CODE_DB",
-    "LOT_QUANTITY_RULE_DB": "&NEW:LOT_QUANTITY_RULE_DB",
-    "SUB_LOT_RULE_DB": "&NEW:SUB_LOT_RULE_DB",
-    "CONDITION_CODE_USAGE_DB": "&NEW:CONDITION_CODE_USAGE_DB",
-    "SERIAL_RULE_DB": "&NEW:SERIAL_RULE_DB",
-    "CONFIGURABLE_DB": "&NEW:CONFIGURABLE_DB",
-    "SERIAL_TRACKING_CODE_DB": "&NEW:SERIAL_TRACKING_CODE_DB"
-  }
-}
-```
+    <details>
+    <summary>Upsert</summary>
 
-### InventoryLocation <-> locations
+    ```json
+    {
+        "action": "upsert",
+        "data": {
+            "ALLOW_AS_NOT_CONSUMED": "&NEW:ALLOW_AS_NOT_CONSUMED",
+            "CATCH_UNIT_ENABLED": "&NEW:CATCH_UNIT_ENABLED",
+            "COMPONENT_LOT_RULE": "&NEW:COMPONENT_LOT_RULE",
+            "CONDITION_CODE_USAGE": "&NEW:CONDITION_CODE_USAGE",
+            "CONFIGURABLE": "&NEW:CONFIGURABLE",
+            "CUST_WARRANTY_ID": "&NEW:CUST_WARRANTY_ID",
+            "DESCRIPTION": "&NEW:DESCRIPTION",
+            "ENG_SERIAL_TRACKING_CODE": "&NEW:ENG_SERIAL_TRACKING_CODE",
+            "FREIGHT_FACTOR": "&NEW:FREIGHT_FACTOR",
+            "INFO_TEXT": "&NEW:INFO_TEXT",
+            "INPUT_UNIT_MEAS_GROUP_ID": "&NEW:INPUT_UNIT_MEAS_GROUP_ID",
+            "LOT_QUANTITY_RULE": "&NEW:LOT_QUANTITY_RULE",
+            "LOT_TRACKING_CODE": "&NEW:LOT_TRACKING_CODE",
+            "MULTILEVEL_TRACKING": "&NEW:MULTILEVEL_TRACKING",
+            "PART_MAIN_GROUP": "&NEW:PART_MAIN_GROUP",
+            "PART_NO": "&NEW:PART_NO",
+            "POSITION_PART": "&NEW:POSITION_PART",
+            "RECEIPT_ISSUE_SERIAL_TRACK": "&NEW:RECEIPT_ISSUE_SERIAL_TRACK",
+            "ROWKEY": "&NEW:ROWKEY",
+            "ROWVERSION": "&NEW:ROWVERSION",
+            "SERIAL_RULE": "&NEW:SERIAL_RULE",
+            "SERIAL_TRACKING_CODE": "&NEW:SERIAL_TRACKING_CODE",
+            "STD_NAME_ID": "&NEW:STD_NAME_ID",
+            "STOP_ARRIVAL_ISSUED_SERIAL": "&NEW:STOP_ARRIVAL_ISSUED_SERIAL",
+            "STOP_NEW_SERIAL_IN_RMA": "&NEW:STOP_NEW_SERIAL_IN_RMA",
+            "SUB_LOT_RULE": "&NEW:SUB_LOT_RULE",
+            "SUP_WARRANTY_ID": "&NEW:SUP_WARRANTY_ID",
+            "TEXT_ID": "&NEW:TEXT_ID",
+            "UNIT_CODE": "&NEW:UNIT_CODE",
+            "UOM_FOR_VOLUME_NET": "&NEW:UOM_FOR_VOLUME_NET",
+            "UOM_FOR_WEIGHT_NET": "&NEW:UOM_FOR_WEIGHT_NET",
+            "VOLUME_NET": "&NEW:VOLUME_NET",
+            "WEIGHT_NET": "&NEW:WEIGHT_NET"
+        }
+    }
+    ```
+
+    </details>
+    <details>
+    <summary>Delete</summary>
+
+    ```json
+    {
+        "action": "delete",
+        "data": {
+            "ROWKEY": "&NEW:ROWKEY"
+        }
+    }
+    ```
+
+    </details>
+
+### TechnicalObjectReferenceTab <-> referenz_artikel_merkmale
 * Custom-Event / Event-ID:
-  * Upsert: `C_NXS_InvLocation_Upsert`
-  * Delete: `C_NXS_InvLocation_Delete`
-* Custom-Event / Descripton: `Wird ausgelöst, wenn Lagerorte erstellt, aktualisiert, oder gelöscht werden`
+  * Upsert: `C_NXS_TechObjRef_Upsert`
+  * Delete: `C_NXS_TechObjRef_Delete`
+* Custom-Event / Descripton: `Wird ausgelöst, wenn Artikelmerkmale erstellt, aktualisiert, oder gelöscht werden`
 * Custom-Event / Event Enabled: `True`
-* Custom-Event / Logical Unit: `InventoryLocation`
-* Custom-Event / Table: `WAREHOUSE_BAY_BIN_TAB`
+* Custom-Event / Logical Unit: ``
+* Custom-Event / Table: `TECHNICAL_OBJECT_REFERENCE_TAB`
 * Custom-Event / Fire When:
   * Upsert: `New objects are created` und `Objects are changed`
   * Delete: `Object are removed`
@@ -375,109 +369,59 @@ Gedachte Version:
 * Custom-Event / Select attributes: Alle `New Value`
 * Event-Action / Action Type: `REST Call`
 * Event-Action / Perform upon Event:
-  * Upsert: `C_NXS_InvLocation_Upsert`
-  * Delete: `C_NXS_InvLocation_Delete`
+  * Upsert: `C_NXS_TechObjRef_Upsert`
+  * Delete: `C_NXS_TechObjRef_Delete`
 * Event-Action / Action Description: `Updatet die NXSearch Datenbank`
-* Event-Action / REST End Point: `https://api.ffbsearch.aifano.com/ifs-sync/locations`
+* Event-Action / REST End Point: `https://api.ffbsearch.aifano.com/ifs-sync/referenz-artikel-merkmale` oder `https://api.ffbsearch.aifano.com/ifs-sync/technical_object_reference_tab`
 * Event-Action / Method: `POST`
 * Event-Action / Sender: `NXS_REST_SENDER`
 * Event-Action / Authenication: `None`
 * Event-Action / Additional Header Parameters: `apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmciOnsiaWQiOiJvcmdfMnc4WWU3eEJUYkNwaFVDdWJHeG9PV2x5R2ROIn0sInR5cGUiOiJpZnMuc3VwcGxpZXIifQ._Q-97RIFnWGb9fnEDfRUPAL8NurYuK6SunYZ7OdPXTg`
 * Event-Action / Body:
-```json
-{
-  "action": "upsert" | "delete",
-  "data": {
-    "LOCATION_ID": "&NEW:LOCATION_ID",
-    "LOCATION_NAME": "&NEW:LOCATION_NAME",
-    "COMPANY_ID": "&NEW:COMPANY_ID",
-    "LOCATION_COMPANY_NAME": "&NEW:LOCATION_COMPANY_NAME"
-  }
-}
-```
+    <details>
+    <summary>Upsert</summary>
 
-### PartCatalogInventAttrib <-> mappingAttributeDescription
-* Custom-Event / Event-ID:
-  * Upsert: `C_NXS_PartAttribute_Upsert`
-  * Delete: `C_NXS_PartAttribute_Delete`
-* Custom-Event / Descripton: `Wird ausgelöst, wenn Attributezuordnungen erstellt, aktualisiert, oder gelöscht werden`
-* Custom-Event / Event Enabled: `True`
-* Custom-Event / Logical Unit: `PartCatalogInventAttrib`
-* Custom-Event / Table: `PART_CATALOG_INVENT_ATTRIB_TAB`
-* Custom-Event / Fire When:
-  * Upsert: `New objects are created` und `Objects are changed`
-  * Delete: `Object are removed`
-* Custom-Event / Fire before or afer object is changed: `After`
-* Custom-Event / Select attributes: Alle `New Value`
-* Event-Action / Action Type: `REST Call`
-* Event-Action / Perform upon Event:
-  * Upsert: `C_NXS_PartAttribute_Upsert`
-  * Delete: `C_NXS_PartAttribute_Delete`
-* Event-Action / Action Description: `Updatet die NXSearch Datenbank`
-* Event-Action / REST End Point: `https://api.ffbsearch.aifano.com/ifs-sync/mapping-attribute`
-* Event-Action / Method: `POST`
-* Event-Action / Sender: `NXS_REST_SENDER`
-* Event-Action / Authenication: `None`
-* Event-Action / Additional Header Parameters: `apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmciOnsiaWQiOiJvcmdfMnc4WWU3eEJUYkNwaFVDdWJHeG9PV2x5R2ROIn0sInR5cGUiOiJpZnMuc3VwcGxpZXIifQ._Q-97RIFnWGb9fnEDfRUPAL8NurYuK6SunYZ7OdPXTg`
-* Event-Action / Body:
-```json
-{
-  "action": "upsert" | "delete",
-  "data": {
-    "ATTRIBUTE": "&NEW:ATTRIBUTE",
-    "DESCRIPTION": "&NEW:DESCRIPTION",
-    "DESCRIPTION_EN": "&NEW:DESCRIPTION_EN",
-    "DESCRIPTION_FR": "&NEW:DESCRIPTION_FR",
-    "DESCRIPTION_ES": "&NEW:DESCRIPTION_ES"
-  }
-}
-```
+    ```json
+    {
+        "action": "upsert",
+        "data": {
+            "DT_OK": "&NEW:DT_OK",
+            "KEY_REF": "&NEW:KEY_REF",
+            "KEY_VALUE": "&NEW:KEY_VALUE",
+            "LU_NAME": "&NEW:LU_NAME",
+            "OK_SIGN": "&NEW:OK_SIGN",
+            "OK_YES_NO": "&NEW:OK_YES_NO",
+            "ROWKEY": "&NEW:ROWKEY",
+            "ROWVERSION": "&NEW:ROWVERSION",
+            "TECHNICAL_CLASS": "&NEW:TECHNICAL_CLASS",
+            "TECHNICAL_SPEC_NO": "&NEW:TECHNICAL_SPEC_NO"
+        }
+    }
+    ```
 
-### TechnicalClass <-> mappingTechnicalClassDescription
-* Custom-Event / Event-ID:
-  * Upsert: `C_NXS_TechClassEnt_Upsert`
-  * Delete: `C_NXS_TechClassEnt_Delete`
-* Custom-Event / Descripton: `Wird ausgelöst, wenn technische Klassifizierungen erstellt, aktualisiert, oder gelöscht werden`
-* Custom-Event / Event Enabled: `True`
-* Custom-Event / Logical Unit: `TechnicalClass`
-* Custom-Event / Table: `TECHNICAL_CLASS_TAB`
-* Custom-Event / Fire When:
-  * Upsert: `New objects are created` und `Objects are changed`
-  * Delete: `Object are removed`
-* Custom-Event / Fire before or afer object is changed: `After`
-* Custom-Event / Select attributes: Alle `New Value`
-* Event-Action / Action Type: `REST Call`
-* Event-Action / Perform upon Event:
-  * Upsert: `C_NXS_TechClassEnt_Upsert`
-  * Delete: `C_NXS_TechClassEnt_Delete`
-* Event-Action / Action Description: `Updatet die NXSearch Datenbank`
-* Event-Action / REST End Point: `https://api.ffbsearch.aifano.com/ifs-sync/mapping-techclass`
-* Event-Action / Method: `POST`
-* Event-Action / Sender: `NXS_REST_SENDER`
-* Event-Action / Authenication: `None`
-* Event-Action / Additional Header Parameters: `apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmciOnsiaWQiOiJvcmdfMnc4WWU3eEJUYkNwaFVDdWJHeG9PV2x5R2ROIn0sInR5cGUiOiJpZnMuc3VwcGxpZXIifQ._Q-97RIFnWGb9fnEDfRUPAL8NurYuK6SunYZ7OdPXTg`
-* Event-Action / Body:
-```json
-{
-  "action": "upsert" | "delete",
-  "data": {
-    "TECHNICAL_CLASS": "&NEW:TECHNICAL_CLASS",
-    "DESCRIPTION": "&NEW:DESCRIPTION",
-    "DESCRIPTION_EN": "&NEW:DESCRIPTION_EN",
-    "DESCRIPTION_FR": "&NEW:DESCRIPTION_FR",
-    "DESCRIPTION_ES": "&NEW:DESCRIPTION_ES"
-  }
-}
-```
+    </details>
+    <details>
+    <summary>Delete</summary>
 
-### ??? <-> merkmalsdaten
+    ```json
+    {
+        "action": "delete",
+        "data": {
+            "ROWKEY": "&NEW:ROWKEY"
+        }
+    }
+    ```
+
+    </details>
+
+### TechnicalSpecificationTab <-> merkmalsdaten
 * Custom-Event / Event-ID:
-  * Upsert: `C_NXS_??_Upsert`
-  * Delete: `C_NXS_??_Delete`
+  * Upsert: `C_NXS_TechSpecTab_Upsert`
+  * Delete: `C_NXS_TechSpecTab_Delete`
 * Custom-Event / Descripton: `Wird ausgelöst, wenn Merkmalsdaten erstellt, aktualisiert, oder gelöscht werden`
 * Custom-Event / Event Enabled: `True`
-* Custom-Event / Logical Unit: `??`
-* Custom-Event / Table: `??`
+* Custom-Event / Logical Unit: ``
+* Custom-Event / Table: `TECHNICAL_SPECIFICATION_TAB`
 * Custom-Event / Fire When:
   * Upsert: `New objects are created` und `Objects are changed`
   * Delete: `Object are removed`
@@ -485,76 +429,52 @@ Gedachte Version:
 * Custom-Event / Select attributes: Alle `New Value`
 * Event-Action / Action Type: `REST Call`
 * Event-Action / Perform upon Event:
-  * Upsert: `C_NXS_??_Upsert`
-  * Delete: `C_NXS_??_DELETE`
+  * Upsert: `C_NXS_TechSpecTab_Upsert`
+  * Delete: `C_NXS_TechSpecTab_Delete`
 * Event-Action / Action Description: `Updatet die NXSearch Datenbank`
-* Event-Action / REST End Point: `https://api.ffbsearch.aifano.com/ifs-sync/merkmalsdaten`
+* Event-Action / REST End Point: `https://api.ffbsearch.aifano.com/ifs-sync/merkmalsdaten` oder `https://api.ffbsearch.aifano.com/ifs-sync/technical_specification_tab`
 * Event-Action / Method: `POST`
 * Event-Action / Sender: `NXS_REST_SENDER`
 * Event-Action / Authenication: `None`
 * Event-Action / Additional Header Parameters: `apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmciOnsiaWQiOiJvcmdfMnc4WWU3eEJUYkNwaFVDdWJHeG9PV2x5R2ROIn0sInR5cGUiOiJpZnMuc3VwcGxpZXIifQ._Q-97RIFnWGb9fnEDfRUPAL8NurYuK6SunYZ7OdPXTg`
 * Event-Action / Body:
-```json
-{
-  "action": "upsert" | "delete",
-  "data": {
-    "TECHNICAL_SPEC_NO": "&NEW:TECHNICAL_SPEC_NO",
-    "TECHNICAL_CLASS": "&NEW:TECHNICAL_CLASS",
-    "ATTRIBUTE": "&NEW:ATTRIBUTE",
-    "ATTRIB_NUMBER": "&NEW:ATTRIB_NUMBER",
-    "VALUE_NO": "&NEW:VALUE_NO",
-    "VALUE_TEXT": "&NEW:VALUE_TEXT",
-    "ALT_VALUE_NO": "&NEW:ALT_VALUE_NO",
-    "LOWER_LIMIT": "&NEW:LOWER_LIMIT",
-    "UPPER_LIMIT": "&NEW:UPPER_LIMIT",
-    "ALT_UNIT": "&NEW:ALT_UNIT",
-    "INFO": "&NEW:INFO",
-    "ROWVERSION": "&NEW:ROWVERSION",
-    "ROWKEY": "&NEW:ROWKEY",
-    "ROWTYPE": "&NEW:ROWTYPE",
-    "C_VALUE_ID": "&NEW:C_VALUE_ID"
-  }
-}
-```
+    <details>
+    <summary>Upsert</summary>
 
-### ??? <-> referenzArtikelMerkmale
-* Custom-Event / Event-ID:
-  * Upsert: `C_NXS_??_Upsert`
-  * Delete: `C_NXS_??_Delete`
-* Custom-Event / Descripton: `Wird ausgelöst, wenn Referenzdaten für Artikelmerkmale erstellt, aktualisiert, oder gelöscht werden`
-* Custom-Event / Event Enabled: `True`
-* Custom-Event / Logical Unit: `??`
-* Custom-Event / Table: `??`
-* Custom-Event / Fire When:
-  * Upsert: `New objects are created` und `Objects are changed`
-  * Delete: `Object are removed`
-* Custom-Event / Fire before or afer object is changed: `After`
-* Custom-Event / Select attributes: Alle `New Value`
-* Event-Action / Action Type: `REST Call`
-* Event-Action / Perform upon Event:
-  * Upsert: `C_NXS_??_Upsert`
-  * Delete: `C_NXS_??_DELETE`
-* Event-Action / Action Description: `Updatet die NXSearch Datenbank`
-* Event-Action / REST End Point: `https://api.ffbsearch.aifano.com/ifs-sync/referenz-artikel-merkmale`
-* Event-Action / Method: `POST`
-* Event-Action / Sender: `NXS_REST_SENDER`
-* Event-Action / Authenication: `None`
-* Event-Action / Additional Header Parameters: `apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmciOnsiaWQiOiJvcmdfMnc4WWU3eEJUYkNwaFVDdWJHeG9PV2x5R2ROIn0sInR5cGUiOiJpZnMuc3VwcGxpZXIifQ._Q-97RIFnWGb9fnEDfRUPAL8NurYuK6SunYZ7OdPXTg`
-* Event-Action / Body:
-```json
-{
-  "action": "upsert" | "delete",
-  "data": {
-    "TECHNICAL_SPEC_NO": "&NEW:TECHNICAL_SPEC_NO",
-    "LU_NAME": "&NEW:LU_NAME",
-    "KEY_REF": "&NEW:KEY_REF",
-    "KEY_VALUE": "&NEW:KEY_VALUE",
-    "TECHNICAL_CLASS": "&NEW:TECHNICAL_CLASS",
-    "OK_YES_NO": "&NEW:OK_YES_NO",
-    "OK_SIGN": "&NEW:OK_SIGN",
-    "DT_OK": "&NEW:DT_OK",
-    "ROWVERSION": "&NEW:ROWVERSION",
-    "ROWKEY": "&NEW:ROWKEY"
-  }
-}
-```
+    ```json
+    {
+        "action": "upsert",
+        "data": {
+            "ALT_UNIT": "&NEW:ALT_UNIT",
+            "ALT_VALUE_NO": "&NEW:ALT_VALUE_NO",
+            "ATTRIB_NUMBER": "&NEW:ATTRIB_NUMBER",
+            "ATTRIBUTE": "&NEW:ATTRIBUTE",
+            "INFO": "&NEW:INFO",
+            "LOWER_LIMIT": "&NEW:LOWER_LIMIT",
+            "ROWKEY": "&NEW:ROWKEY",
+            "ROWTYPE": "&NEW:ROWTYPE",
+            "ROWVERSION": "&NEW:ROWVERSION",
+            "TECHNICAL_CLASS": "&NEW:TECHNICAL_CLASS",
+            "TECHNICAL_SPEC_NO": "&NEW:TECHNICAL_SPEC_NO",
+            "UPPER_LIMIT": "&NEW:UPPER_LIMIT",
+            "VALUE_NO": "&NEW:VALUE_NO",
+            "VALUE_TEXT": "&NEW:VALUE_TEXT",
+            "C_VALUE_ID": "&NEW:C_VALUE_ID"
+        }
+    }
+    ```
+
+    </details>
+    <details>
+    <summary>Delete</summary>
+
+    ```json
+    {
+        "action": "delete",
+        "data": {
+            "ROWKEY": "&NEW:ROWKEY"
+        }
+    }
+    ```
+
+    </details>

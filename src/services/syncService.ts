@@ -1,24 +1,33 @@
-import { artikelbestandOps } from '../schemas/artikelbestand';
-import { hauptartikeldatenOps } from '../schemas/hauptartikeldaten';
+import { inventoryPartInStockTabOps } from '../schemas/inventoryPartInStockTab';
 import { languageSysTabOps } from '../schemas/languageSysTab';
-import { merkmalsdatenOps } from '../schemas/merkmalsdaten';
-import { referenzArtikelMerkmaleOps } from '../schemas/referenzArtikelMerkmale';
 import { Prisma } from '@prisma/client';
+import { partCatalogTabObs } from '../schemas/partCatalogTab';
+import { technicalObjectReferenceTabObs } from '../schemas/technicalObjectReferenceTab';
+import { technicalSpecificationTabObs } from '../schemas/technicalSpecificationTab';
 
 
 export const handlePrismaSync = async (table: string, action: string, data: any) => {
   console.log(`Start ${action} for table ${table}`);
   switch (table) {
+    case 'inventory_part_in_stock_tab':
     case 'artikelbestand':
-      return await sync(artikelbestandOps, action, data);
-    case 'hauptartikeldaten':
-      return await sync(hauptartikeldatenOps, action, data);
+      return await sync(inventoryPartInStockTabOps, action, data);
+
     case 'language_sys_tab':
       return await sync(languageSysTabOps, action, data);
-    case 'merkmalsdaten':
-      return await sync(merkmalsdatenOps, action, data);
+
+    case 'part_catalog_tab':
+    case 'hauptartikeldaten':
+      return await sync(partCatalogTabObs, action, data);
+
+    case 'technical_object_reference_tab':
     case 'referenz-artikel-merkmale':
-      return await sync(referenzArtikelMerkmaleOps, action, data);
+      return await sync(technicalObjectReferenceTabObs, action, data);
+
+    case 'technical_specification_tab':
+    case 'merkmalsdaten':
+      return await sync(technicalSpecificationTabObs, action, data);
+
     default:
       throw new Error('Table not found');
   }
