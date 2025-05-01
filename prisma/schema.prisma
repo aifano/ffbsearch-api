@@ -9,7 +9,7 @@ datasource db {
 }
 
 model InventoryPartInStockTab {
-  @@map("artikelbestand")
+  @@map("__inventory_part_in_stock_tab")
 
   @@id([ROWKEY])
   @@index([PART_NO, CONTRACT])
@@ -53,10 +53,12 @@ model InventoryPartInStockTab {
   TIER_NO                       String?
   WAIV_DEV_REJ_NO               String?
   WAREHOUSE                     String?
+
+  synced_at                     DateTime  @default(now())
 }
 
 model LanguageSysTab {
-  @@map("language_sys_tab")
+  @@map("__language_sys_tab")
 
   @@id([ATTRIBUTE, LANG_CODE, PATH])
 
@@ -72,10 +74,12 @@ model LanguageSysTab {
   BULK                          String?
   ROWVERSION                    String?
   LAYER                         String?
+
+  synced_at                     DateTime  @default(now())
 }
 
 model PartCatalogTab {
-  @@map("hauptartikeldaten")
+  @@map("__part_catalog_tab")
 
   @@id([ROWKEY])
   @@index([PART_NO])
@@ -113,10 +117,12 @@ model PartCatalogTab {
   UOM_FOR_WEIGHT_NET         String?
   VOLUME_NET                 String?
   WEIGHT_NET                 String?
+
+  synced_at                  DateTime  @default(now())
 }
 
 model TechnicalObjectReferenceTab {
-  @@map("referenz_artikel_merkmale")
+  @@map("__technical_object_reference_tab")
 
   @@id([ROWKEY])
   @@index([TECHNICAL_SPEC_NO])
@@ -131,10 +137,12 @@ model TechnicalObjectReferenceTab {
   ROWVERSION                    String?
   TECHNICAL_CLASS               String?
   TECHNICAL_SPEC_NO             String?
+
+  synced_at                     DateTime  @default(now())
 }
 
 model TechnicalSpecificationTab {
-  @@map("merkmalsdaten")
+  @@map("__technical_specification_tab")
 
   @@id([ROWKEY])
   @@index([TECHNICAL_SPEC_NO])
@@ -153,301 +161,451 @@ model TechnicalSpecificationTab {
   UPPER_LIMIT                   String?
   VALUE_NO                      String?
   VALUE_TEXT                    String?
+  C_VALUE_ID                    String? /// Custom Fields
 
-  /// Custom Fields
-  C_VALUE_ID                    String?
+  synced_at                     DateTime @default(now())
 }
 
+model OldInventoryPartInStockTab {
+  CONTRACT                String?
+  PART_NO                 String?
+  CONFIGURATION_ID        String?
+  LOCATION_NO             String?
+  LOT_BATCH_NO            String?
+  SERIAL_NO               String?
+  ENG_CHG_LEVEL           String?
+  WAIV_DEV_REJ_NO         String?
+  ACTIVITY_SEQ            String?
+  HANDLING_UNIT_ID        String?
+  AVG_UNIT_TRANSIT_COST   String?
+  COUNT_VARIANCE          String?
+  EXPIRATION_DATE         String?
+  FREEZE_FLAG             String?
+  LAST_ACTIVITY_DATE      String?
+  LAST_COUNT_DATE         String?
+  LOCATION_TYPE           String?
+  QTY_IN_TRANSIT          String?
+  QTY_ONHAND              String?
+  QTY_RESERVED            String?
+  RECEIPT_DATE            String?
+  SOURCE                  String?
+  WAREHOUSE               String?
+  BAY_NO                  String?
+  ROW_NO                  String?
+  TIER_NO                 String?
+  BIN_NO                  String?
+  AVAILABILITY_CONTROL_ID String?
+  CREATE_DATE             String?
+  ROTABLE_PART_POOL_ID    String?
+  PROJECT_ID              String?
+  CATCH_QTY_IN_TRANSIT    String?
+  CATCH_QTY_ONHAND        String?
+  PART_OWNERSHIP          String?
+  OWNING_CUSTOMER_NO      String?
+  OWNING_VENDOR_NO        String?
+  ROWVERSION              String?
+  ROWKEY                  String   @id
+  LATEST_TRANSACTION_ID   String?
+  synced_at               DateTime
 
+  @@index([PART_NO, CONTRACT])
+  @@map("artikelbestand")
+  @@ignore
+}
+
+model OldLanguageSysTab {
+  ATTRIBUTE         String
+  BULK              String?
+  INSTALLATION_TEXT String?
+  LANG_CODE         String
+  LAYER             String?
+  MAIN_TYPE         String?
+  MODULE            String?
+  PATH              String
+  ROWVERSION        String?
+  SYSTEM_DEFINED    String?
+  TEXT              String?
+  TYPE              String?
+  synced_at         DateTime
+
+  @@id([ATTRIBUTE, LANG_CODE, PATH])
+  @@map("language_sys_tab")
+  @@ignore
+}
+
+model OldPartCatalogTab {
+  ALLOW_AS_NOT_CONSUMED      String?
+  CATCH_UNIT_ENABLED         String?
+  COMPONENT_LOT_RULE         String?
+  CONDITION_CODE_USAGE       String?
+  CONFIGURABLE               String?
+  CUST_WARRANTY_ID           String?
+  DESCRIPTION                String?
+  ENG_SERIAL_TRACKING_CODE   String?
+  FREIGHT_FACTOR             String?
+  INFO_TEXT                  String?
+  INPUT_UNIT_MEAS_GROUP_ID   String?
+  LOT_QUANTITY_RULE          String?
+  LOT_TRACKING_CODE          String?
+  MULTILEVEL_TRACKING        String?
+  PART_MAIN_GROUP            String?
+  PART_NO                    String?
+  POSITION_PART              String?
+  RECEIPT_ISSUE_SERIAL_TRACK String?
+  ROWKEY                     String   @id
+  ROWVERSION                 String?
+  SERIAL_RULE                String?
+  SERIAL_TRACKING_CODE       String?
+  STD_NAME_ID                String?
+  STOP_ARRIVAL_ISSUED_SERIAL String?
+  STOP_NEW_SERIAL_IN_RMA     String?
+  SUB_LOT_RULE               String?
+  SUP_WARRANTY_ID            String?
+  TEXT_ID                    String?
+  UNIT_CODE                  String?
+  UOM_FOR_VOLUME_NET         String?
+  UOM_FOR_WEIGHT_NET         String?
+  VOLUME_NET                 String?
+  WEIGHT_NET                 String?
+  synced_at                  DateTime
+
+  @@index([PART_NO])
+  @@map("_hauptartikeldaten")
+  @@ignore
+}
+
+model OldTechnicalObjectReferenceTab {
+  TECHNICAL_SPEC_NO String?
+  LU_NAME           String?
+  KEY_REF           String?
+  KEY_VALUE         String?
+  TECHNICAL_CLASS   String?
+  OK_YES_NO         String?
+  OK_SIGN           String?
+  DT_OK             String?
+  ROWVERSION        String?
+  ROWKEY            String   @id
+  synced_at         DateTime
+
+  @@index([TECHNICAL_SPEC_NO])
+  @@map("referenz_artikel_merkmale")
+  @@ignore
+}
+
+model OldTechnicalSpecificationTab {
+  TECHNICAL_SPEC_NO String?
+  TECHNICAL_CLASS   String?
+  ATTRIBUTE         String?
+  ATTRIB_NUMBER     String?
+  VALUE_NO          String?
+  VALUE_TEXT        String?
+  ALT_VALUE_NO      String?
+  LOWER_LIMIT       String?
+  UPPER_LIMIT       String?
+  ALT_UNIT          String?
+  INFO              String?
+  ROWVERSION        String?
+  ROWKEY            String   @id
+  ROWTYPE           String?
+  C_VALUE_ID        String?
+  synced_at         DateTime
+
+  @@index([TECHNICAL_SPEC_NO])
+  @@map("merkmalsdaten")
+  @@ignore
+}
+
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
 model Locations {
+  LOCATION_ID           String  @id
+  LOCATION_NAME         String?
+  COMPANY_ID            String?
+  LOCATION_COMPANY_NAME String?
+
   @@map("locations")
-  @@id([LOCATION_ID])
-
-  LOCATION_ID                   String
-  LOCATION_NAME                 String?
-  COMPANY_ID                    String?
-  LOCATION_COMPANY_NAME         String?
+  @@ignore
 }
 
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
 model MappingAttributeDescription {
+  ATTRIBUTE      String  @id
+  DESCRIPTION    String?
+  DESCRIPTION_EN String?
+  DESCRIPTION_FR String?
+  DESCRIPTION_ES String?
+
   @@map("mapping_attribute_description")
-  @@id([ATTRIBUTE])
-
-  ATTRIBUTE                     String
-  DESCRIPTION                   String?
-  DESCRIPTION_EN                String?
-  DESCRIPTION_FR                String?
-  DESCRIPTION_ES                String?
+  @@ignore
 }
 
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
 model MappingTechnicalClassDescription {
+  TECHNICAL_CLASS String  @id
+  DESCRIPTION     String?
+  DESCRIPTION_EN  String?
+  DESCRIPTION_FR  String?
+  DESCRIPTION_ES  String?
+
   @@map("mapping_technical_class_description")
-  @@id([TECHNICAL_CLASS])
-
-  TECHNICAL_CLASS               String
-  DESCRIPTION                   String?
-  DESCRIPTION_EN                String?
-  DESCRIPTION_FR                String?
-  DESCRIPTION_ES                String?
+  @@ignore
 }
-
 
 model bestandsartikel {
-  CONTRACT                   String? @db.VarChar
-  PART_NO                    String? @db.VarChar
-  ACCOUNTING_GROUP           String? @db.VarChar
-  ASSET_CLASS                String? @db.VarChar
-  COUNTRY_OF_ORIGIN          String? @db.VarChar
-  HAZARD_CODE                String? @db.VarChar
-  NOTE_ID                    String? @db.VarChar
-  PART_PRODUCT_CODE          String? @db.VarChar
-  PART_PRODUCT_FAMILY        String? @db.VarChar
-  PART_STATUS                String? @db.VarChar
-  PLANNER_BUYER              String? @db.VarChar
-  PRIME_COMMODITY            String? @db.VarChar
-  SECOND_COMMODITY           String? @db.VarChar
-  UNIT_MEAS                  String? @db.VarChar
-  CATCH_UNIT_MEAS            String? @db.VarChar
-  DESCRIPTION                String? @db.VarChar
-  ABC_CLASS                  String? @db.VarChar
-  COUNT_VARIANCE             String? @db.VarChar
-  CREATE_DATE                String? @db.VarChar
-  CYCLE_CODE                 String? @db.VarChar
-  CYCLE_PERIOD               String? @db.VarChar
-  DIM_QUALITY                String? @db.VarChar
-  DURABILITY_DAY             String? @db.VarChar
-  EXPECTED_LEADTIME          String? @db.VarChar
-  LAST_ACTIVITY_DATE         String? @db.VarChar
-  LEAD_TIME_CODE             String? @db.VarChar
-  MANUF_LEADTIME             String? @db.VarChar
-  NOTE_TEXT                  String? @db.VarChar
-  OE_ALLOC_ASSIGN_FLAG       String? @db.VarChar
-  ONHAND_ANALYSIS_FLAG       String? @db.VarChar
-  PURCH_LEADTIME             String? @db.VarChar
-  EARLIEST_ULTD_SUPPLY_DATE  String? @db.VarChar
-  SUPERSEDES                 String? @db.VarChar
-  SUPPLY_CODE                String? @db.VarChar
-  TYPE_CODE                  String? @db.VarChar
-  CUSTOMS_STAT_NO            String? @db.VarChar
-  TYPE_DESIGNATION           String? @db.VarChar
-  ZERO_COST_FLAG             String? @db.VarChar
-  AVAIL_ACTIVITY_STATUS      String? @db.VarChar
-  ENG_ATTRIBUTE              String? @db.VarChar
-  SHORTAGE_FLAG              String? @db.VarChar
-  FORECAST_CONSUMPTION_FLAG  String? @db.VarChar
-  STOCK_MANAGEMENT           String? @db.VarChar
-  INTRASTAT_CONV_FACTOR      String? @db.VarChar
-  PART_COST_GROUP_ID         String? @db.VarChar
-  DOP_CONNECTION             String? @db.VarChar
-  STD_NAME_ID                String? @db.VarChar
-  INVENTORY_VALUATION_METHOD String? @db.VarChar
-  NEGATIVE_ON_HAND           String? @db.VarChar
-  TECHNICAL_COORDINATOR_ID   String? @db.VarChar
-  INVOICE_CONSIDERATION      String? @db.VarChar
-  ACTUAL_COST_ACTIVATED      String? @db.VarChar
-  MAX_ACTUAL_COST_UPDATE     String? @db.VarChar
-  CUST_WARRANTY_ID           String? @db.VarChar
-  SUP_WARRANTY_ID            String? @db.VarChar
-  REGION_OF_ORIGIN           String? @db.VarChar
-  INVENTORY_PART_COST_LEVEL  String? @db.VarChar
-  EXT_SERVICE_COST_METHOD    String? @db.VarChar
-  SUPPLY_CHAIN_PART_GROUP    String? @db.VarChar
-  AUTOMATIC_CAPABILITY_CHECK String? @db.VarChar
-  INPUT_UNIT_MEAS_GROUP_ID   String? @db.VarChar
-  DOP_NETTING                String? @db.VarChar
-  CO_RESERVE_ONH_ANALYS_FLAG String? @db.VarChar
-  QTY_CALC_ROUNDING          String? @db.VarChar
-  LIFECYCLE_STAGE            String? @db.VarChar
-  FREQUENCY_CLASS            String? @db.VarChar
-  FIRST_STAT_ISSUE_DATE      String? @db.VarChar
-  LATEST_STAT_ISSUE_DATE     String? @db.VarChar
-  DECLINE_DATE               String? @db.VarChar
-  EXPIRED_DATE               String? @db.VarChar
-  DECLINE_ISSUE_COUNTER      String? @db.VarChar
-  EXPIRED_ISSUE_COUNTER      String? @db.VarChar
-  MIN_DURAB_DAYS_CO_DELIV    String? @db.VarChar
-  MIN_DURAB_DAYS_PLANNING    String? @db.VarChar
-  STORAGE_WIDTH_REQUIREMENT  String? @db.VarChar
-  STORAGE_HEIGHT_REQUIREMENT String? @db.VarChar
-  STORAGE_DEPTH_REQUIREMENT  String? @db.VarChar
-  STORAGE_VOLUME_REQUIREMENT String? @db.VarChar
-  STORAGE_WEIGHT_REQUIREMENT String? @db.VarChar
-  MIN_STORAGE_TEMPERATURE    String? @db.VarChar
-  MAX_STORAGE_TEMPERATURE    String? @db.VarChar
-  MIN_STORAGE_HUMIDITY       String? @db.VarChar
-  MAX_STORAGE_HUMIDITY       String? @db.VarChar
-  STANDARD_PUTAWAY_QTY       String? @db.VarChar
-  PUTAWAY_ZONE_REFILL_OPTION String? @db.VarChar
-  RESET_CONFIG_STD_COST      String? @db.VarChar
-  MANDATORY_EXPIRATION_DATE  String? @db.VarChar
-  TEXT_ID                    String? @db.VarChar
-  ROWVERSION                 String? @db.VarChar
-  ROWKEY                     String? @db.VarChar
-  SPECIAL_CONSUMPTION_TAX    String? @db.VarChar
-  SUBJECT_TO_OVERHEADS       String? @db.VarChar
-  CUSTOMS_DECL_NO_LEVEL      String? @db.VarChar
-  PRODUCT_CATEGORY           String? @db.VarChar
-  LATEST_STAT_AFFECTING_DATE String? @db.VarChar
+  CONTRACT                   String?
+  PART_NO                    String?
+  ACCOUNTING_GROUP           String?
+  ASSET_CLASS                String?
+  COUNTRY_OF_ORIGIN          String?
+  HAZARD_CODE                String?
+  NOTE_ID                    String?
+  PART_PRODUCT_CODE          String?
+  PART_PRODUCT_FAMILY        String?
+  PART_STATUS                String?
+  PLANNER_BUYER              String?
+  PRIME_COMMODITY            String?
+  SECOND_COMMODITY           String?
+  UNIT_MEAS                  String?
+  CATCH_UNIT_MEAS            String?
+  DESCRIPTION                String?
+  ABC_CLASS                  String?
+  COUNT_VARIANCE             String?
+  CREATE_DATE                String?
+  CYCLE_CODE                 String?
+  CYCLE_PERIOD               String?
+  DIM_QUALITY                String?
+  DURABILITY_DAY             String?
+  EXPECTED_LEADTIME          String?
+  LAST_ACTIVITY_DATE         String?
+  LEAD_TIME_CODE             String?
+  MANUF_LEADTIME             String?
+  NOTE_TEXT                  String?
+  OE_ALLOC_ASSIGN_FLAG       String?
+  ONHAND_ANALYSIS_FLAG       String?
+  PURCH_LEADTIME             String?
+  EARLIEST_ULTD_SUPPLY_DATE  String?
+  SUPERSEDES                 String?
+  SUPPLY_CODE                String?
+  TYPE_CODE                  String?
+  CUSTOMS_STAT_NO            String?
+  TYPE_DESIGNATION           String?
+  ZERO_COST_FLAG             String?
+  AVAIL_ACTIVITY_STATUS      String?
+  ENG_ATTRIBUTE              String?
+  SHORTAGE_FLAG              String?
+  FORECAST_CONSUMPTION_FLAG  String?
+  STOCK_MANAGEMENT           String?
+  INTRASTAT_CONV_FACTOR      String?
+  PART_COST_GROUP_ID         String?
+  DOP_CONNECTION             String?
+  STD_NAME_ID                String?
+  INVENTORY_VALUATION_METHOD String?
+  NEGATIVE_ON_HAND           String?
+  TECHNICAL_COORDINATOR_ID   String?
+  INVOICE_CONSIDERATION      String?
+  ACTUAL_COST_ACTIVATED      String?
+  MAX_ACTUAL_COST_UPDATE     String?
+  CUST_WARRANTY_ID           String?
+  SUP_WARRANTY_ID            String?
+  REGION_OF_ORIGIN           String?
+  INVENTORY_PART_COST_LEVEL  String?
+  EXT_SERVICE_COST_METHOD    String?
+  SUPPLY_CHAIN_PART_GROUP    String?
+  AUTOMATIC_CAPABILITY_CHECK String?
+  INPUT_UNIT_MEAS_GROUP_ID   String?
+  DOP_NETTING                String?
+  CO_RESERVE_ONH_ANALYS_FLAG String?
+  QTY_CALC_ROUNDING          String?
+  LIFECYCLE_STAGE            String?
+  FREQUENCY_CLASS            String?
+  FIRST_STAT_ISSUE_DATE      String?
+  LATEST_STAT_ISSUE_DATE     String?
+  DECLINE_DATE               String?
+  EXPIRED_DATE               String?
+  DECLINE_ISSUE_COUNTER      String?
+  EXPIRED_ISSUE_COUNTER      String?
+  MIN_DURAB_DAYS_CO_DELIV    String?
+  MIN_DURAB_DAYS_PLANNING    String?
+  STORAGE_WIDTH_REQUIREMENT  String?
+  STORAGE_HEIGHT_REQUIREMENT String?
+  STORAGE_DEPTH_REQUIREMENT  String?
+  STORAGE_VOLUME_REQUIREMENT String?
+  STORAGE_WEIGHT_REQUIREMENT String?
+  MIN_STORAGE_TEMPERATURE    String?
+  MAX_STORAGE_TEMPERATURE    String?
+  MIN_STORAGE_HUMIDITY       String?
+  MAX_STORAGE_HUMIDITY       String?
+  STANDARD_PUTAWAY_QTY       String?
+  PUTAWAY_ZONE_REFILL_OPTION String?
+  RESET_CONFIG_STD_COST      String?
+  MANDATORY_EXPIRATION_DATE  String?
+  TEXT_ID                    String?
+  ROWVERSION                 String?
+  ROWKEY                     String?
+  SPECIAL_CONSUMPTION_TAX    String?
+  SUBJECT_TO_OVERHEADS       String?
+  CUSTOMS_DECL_NO_LEVEL      String?
+  PRODUCT_CATEGORY           String?
+  LATEST_STAT_AFFECTING_DATE String?
 
   @@map("_bestandsartikel")
   @@ignore
 }
 
 model einkaufsartikeldaten {
-  CONTRACT                  String? @db.VarChar
-  PART_NO                   String? @db.VarChar
-  DESCRIPTION               String? @db.VarChar
-  ENG_ATTRIBUTE             String? @db.VarChar
-  NOTE_ID                   String? @db.VarChar
-  QC_CODE                   String? @db.VarChar
-  STAT_GRP                  String? @db.VarChar
-  CLOSE_CODE                String? @db.VarChar
-  CLOSE_TOLERANCE           String? @db.VarChar
-  DATE_CRE                  String? @db.VarChar
-  INVENTORY_FLAG            String? @db.VarChar
-  NOTE_TEXT                 String? @db.VarChar
-  QC_DATE                   String? @db.VarChar
-  DEFAULT_BUY_UNIT_MEAS     String? @db.VarChar
-  OVER_DELIVERY_TOLERANCE   String? @db.VarChar
-  OVER_DELIVERY             String? @db.VarChar
-  BUYER_CODE                String? @db.VarChar
-  PROCESS_TYPE              String? @db.VarChar
-  STANDARD_PACK_SIZE        String? @db.VarChar
-  TECHNICAL_COORDINATOR_ID  String? @db.VarChar
-  TAXABLE                   String? @db.VarChar
-  DOP_PEGGED_PO_UPDATE_FLAG String? @db.VarChar
-  ACQUISITION_TYPE          String? @db.VarChar
-  ACTION_NON_AUTHORIZED     String? @db.VarChar
-  ACTION_AUTHORIZED         String? @db.VarChar
-  EXTERNAL_RESOURCE         String? @db.VarChar
-  TEXT_ID                   String? @db.VarChar
-  ROWVERSION                String? @db.VarChar
-  ROWKEY                    String? @db.VarChar
-  CPA_CODE                  String? @db.VarChar
-  CPA_CODE_MANUF            String? @db.VarChar
-  EMPTY                     String? @db.VarChar
+  CONTRACT                  String?
+  PART_NO                   String?
+  DESCRIPTION               String?
+  ENG_ATTRIBUTE             String?
+  NOTE_ID                   String?
+  QC_CODE                   String?
+  STAT_GRP                  String?
+  CLOSE_CODE                String?
+  CLOSE_TOLERANCE           String?
+  DATE_CRE                  String?
+  INVENTORY_FLAG            String?
+  NOTE_TEXT                 String?
+  QC_DATE                   String?
+  DEFAULT_BUY_UNIT_MEAS     String?
+  OVER_DELIVERY_TOLERANCE   String?
+  OVER_DELIVERY             String?
+  BUYER_CODE                String?
+  PROCESS_TYPE              String?
+  STANDARD_PACK_SIZE        String?
+  TECHNICAL_COORDINATOR_ID  String?
+  TAXABLE                   String?
+  DOP_PEGGED_PO_UPDATE_FLAG String?
+  ACQUISITION_TYPE          String?
+  ACTION_NON_AUTHORIZED     String?
+  ACTION_AUTHORIZED         String?
+  EXTERNAL_RESOURCE         String?
+  TEXT_ID                   String?
+  ROWVERSION                String?
+  ROWKEY                    String?
+  CPA_CODE                  String?
+  CPA_CODE_MANUF            String?
+  EMPTY                     String?
 
   @@map("_einkaufsartikeldaten")
   @@ignore
 }
 
 model hauptartikeldaten {
-  PART_NO                       String  @db.VarChar
-  DESCRIPTION                   String? @db.VarChar
-  INFO_TEXT                     String? @db.VarChar
-  STD_NAME_ID                   String? @db.VarChar
-  UNIT_CODE                     String? @db.VarChar
-  LOT_TRACKING_CODE             String? @db.VarChar
-  SERIAL_RULE                   String? @db.VarChar
-  SERIAL_TRACKING_CODE          String? @db.VarChar
-  ENG_SERIAL_TRACKING_CODE      String? @db.VarChar
-  PART_MAIN_GROUP               String? @db.VarChar
-  CONFIGURABLE                  String? @db.VarChar
-  CUST_WARRANTY_ID              String? @db.VarChar
-  SUP_WARRANTY_ID               String? @db.VarChar
-  CONDITION_CODE_USAGE          String? @db.VarChar
-  SUB_LOT_RULE                  String? @db.VarChar
-  LOT_QUANTITY_RULE             String? @db.VarChar
-  POSITION_PART                 String? @db.VarChar
-  INPUT_UNIT_MEAS_GROUP_ID      String? @db.VarChar
-  CATCH_UNIT_ENABLED            String? @db.VarChar
-  MULTILEVEL_TRACKING           String? @db.VarChar
-  COMPONENT_LOT_RULE            String? @db.VarChar
-  STOP_ARRIVAL_ISSUED_SERIAL    String? @db.VarChar
-  WEIGHT_NET                    String? @db.VarChar
-  UOM_FOR_WEIGHT_NET            String? @db.VarChar
-  VOLUME_NET                    String? @db.VarChar
-  UOM_FOR_VOLUME_NET            String? @db.VarChar
-  FREIGHT_FACTOR                String? @db.VarChar
-  ALLOW_AS_NOT_CONSUMED         String? @db.VarChar
-  RECEIPT_ISSUE_SERIAL_TRACK    String? @db.VarChar
-  STOP_NEW_SERIAL_IN_RMA        String? @db.VarChar
-  TEXT_ID                       String? @db.VarChar
-  ROWVERSION                    String? @db.VarChar
-  ROWKEY                        String? @db.VarChar
-  EMPTY                         String? @db.VarChar
-  OBJVERSION                    String? @db.VarChar
-  LANGUAGE_DESCRIPTION          String? @db.VarChar
-  CATCH_UNIT_ENABLED_DB         String? @db.VarChar
-  STOP_ARRIVAL_ISSUED_SERIAL_DB String? @db.VarChar
-  OBJID                         String? @db.VarChar
-  OBJKEY                        String? @db.VarChar
-  COMPONENT_LOT_RULE_DB         String? @db.VarChar
-  ALLOW_AS_NOT_CONSUMED_DB      String? @db.VarChar
-  STOP_NEW_SERIAL_IN_RMA_DB     String? @db.VarChar
-  POSITION_PART_DB              String? @db.VarChar
-  RECEIPT_ISSUE_SERIAL_TRACK_DB String? @db.VarChar
-  MULTILEVEL_TRACKING_DB        String? @db.VarChar
-  LOT_TRACKING_CODE_DB          String? @db.VarChar
-  ENG_SERIAL_TRACKING_CODE_DB   String? @db.VarChar
-  LOT_QUANTITY_RULE_DB          String? @db.VarChar
-  SUB_LOT_RULE_DB               String? @db.VarChar
-  CONDITION_CODE_USAGE_DB       String? @db.VarChar
-  SERIAL_RULE_DB                String? @db.VarChar
-  CONFIGURABLE_DB               String? @db.VarChar
-  SERIAL_TRACKING_CODE_DB       String? @db.VarChar
+  PART_NO                       String
+  DESCRIPTION                   String?
+  INFO_TEXT                     String?
+  STD_NAME_ID                   String?
+  UNIT_CODE                     String?
+  LOT_TRACKING_CODE             String?
+  SERIAL_RULE                   String?
+  SERIAL_TRACKING_CODE          String?
+  ENG_SERIAL_TRACKING_CODE      String?
+  PART_MAIN_GROUP               String?
+  CONFIGURABLE                  String?
+  CUST_WARRANTY_ID              String?
+  SUP_WARRANTY_ID               String?
+  CONDITION_CODE_USAGE          String?
+  SUB_LOT_RULE                  String?
+  LOT_QUANTITY_RULE             String?
+  POSITION_PART                 String?
+  INPUT_UNIT_MEAS_GROUP_ID      String?
+  CATCH_UNIT_ENABLED            String?
+  MULTILEVEL_TRACKING           String?
+  COMPONENT_LOT_RULE            String?
+  STOP_ARRIVAL_ISSUED_SERIAL    String?
+  WEIGHT_NET                    String?
+  UOM_FOR_WEIGHT_NET            String?
+  VOLUME_NET                    String?
+  UOM_FOR_VOLUME_NET            String?
+  FREIGHT_FACTOR                String?
+  ALLOW_AS_NOT_CONSUMED         String?
+  RECEIPT_ISSUE_SERIAL_TRACK    String?
+  STOP_NEW_SERIAL_IN_RMA        String?
+  TEXT_ID                       String?
+  ROWVERSION                    String?
+  ROWKEY                        String?
+  EMPTY                         String?
+  OBJVERSION                    String?
+  LANGUAGE_DESCRIPTION          String?
+  CATCH_UNIT_ENABLED_DB         String?
+  STOP_ARRIVAL_ISSUED_SERIAL_DB String?
+  OBJID                         String?
+  OBJKEY                        String?
+  COMPONENT_LOT_RULE_DB         String?
+  ALLOW_AS_NOT_CONSUMED_DB      String?
+  STOP_NEW_SERIAL_IN_RMA_DB     String?
+  POSITION_PART_DB              String?
+  RECEIPT_ISSUE_SERIAL_TRACK_DB String?
+  MULTILEVEL_TRACKING_DB        String?
+  LOT_TRACKING_CODE_DB          String?
+  ENG_SERIAL_TRACKING_CODE_DB   String?
+  LOT_QUANTITY_RULE_DB          String?
+  SUB_LOT_RULE_DB               String?
+  CONDITION_CODE_USAGE_DB       String?
+  SERIAL_RULE_DB                String?
+  CONFIGURABLE_DB               String?
+  SERIAL_TRACKING_CODE_DB       String?
 
-  @@map("_hauptartikeldaten")
+  @@map("hauptartikeldaten")
   @@ignore
 }
 
 model verkaufsartikeldaten {
-  CONTRACT                   String? @db.VarChar
-  CATALOG_NO                 String? @db.VarChar
-  CATALOG_DESC               String? @db.VarChar
-  PART_NO                    String? @db.VarChar
-  CATALOG_GROUP              String? @db.VarChar
-  SALES_PRICE_GROUP_ID       String? @db.VarChar
-  ENG_ATTRIBUTE              String? @db.VarChar
-  NOTE_ID                    String? @db.VarChar
-  PRINT_CONTROL_CODE         String? @db.VarChar
-  SALES_UNIT_MEAS            String? @db.VarChar
-  ACTIVEIND                  String? @db.VarChar
-  CATALOG_TYPE               String? @db.VarChar
-  CONV_FACTOR                String? @db.VarChar
-  COST                       String? @db.VarChar
-  CUSTOMS_STAT_NO            String? @db.VarChar
-  DATE_ENTERED               String? @db.VarChar
-  DISCOUNT_GROUP             String? @db.VarChar
-  LIST_PRICE                 String? @db.VarChar
-  LIST_PRICE_INCL_TAX        String? @db.VarChar
-  RENTAL_LIST_PRICE          String? @db.VarChar
-  RENTAL_LIST_PRICE_INCL_TAX String? @db.VarChar
-  NOTE_TEXT                  String? @db.VarChar
-  PRICE_CHANGE_DATE          String? @db.VarChar
-  PRICE_CONV_FACTOR          String? @db.VarChar
-  PRICE_UNIT_MEAS            String? @db.VarChar
-  TAX_CODE                   String? @db.VarChar
-  TAX_CLASS_ID               String? @db.VarChar
-  TAXABLE                    String? @db.VarChar
-  CLOSE_TOLERANCE            String? @db.VarChar
-  CREATE_SM_OBJECT_OPTION    String? @db.VarChar
-  EXPECTED_AVERAGE_PRICE     String? @db.VarChar
-  PURCHASE_PART_NO           String? @db.VarChar
-  REPLACEMENT_PART_NO        String? @db.VarChar
-  DATE_OF_REPLACEMENT        String? @db.VarChar
-  CUST_WARRANTY_ID           String? @db.VarChar
-  NON_INV_PART_TYPE          String? @db.VarChar
-  INTRASTAT_CONV_FACTOR      String? @db.VarChar
-  SOURCING_OPTION            String? @db.VarChar
-  RULE_ID                    String? @db.VarChar
-  QUICK_REGISTERED_PART      String? @db.VarChar
-  MINIMUM_QTY                String? @db.VarChar
-  DELIVERY_TYPE              String? @db.VarChar
-  EXPORT_TO_EXTERNAL_APP     String? @db.VarChar
-  ALLOW_PARTIAL_PKG_DELIV    String? @db.VarChar
-  SALES_PART_REBATE_GROUP    String? @db.VarChar
-  PRIMARY_CATALOG            String? @db.VarChar
-  INVERTED_CONV_FACTOR       String? @db.VarChar
-  USE_PRICE_INCL_TAX         String? @db.VarChar
-  SALES_TYPE                 String? @db.VarChar
-  COUNTRY_OF_ORIGIN          String? @db.VarChar
-  TEXT_ID                    String? @db.VarChar
-  ROWVERSION                 String? @db.VarChar
-  ROWKEY                     String? @db.VarChar
-  CPA_CODE                   String? @db.VarChar
-  HSN_SAC_CODE               String? @db.VarChar
-  EMPTY                      String? @db.VarChar
+  CONTRACT                   String?
+  CATALOG_NO                 String?
+  CATALOG_DESC               String?
+  PART_NO                    String?
+  CATALOG_GROUP              String?
+  SALES_PRICE_GROUP_ID       String?
+  ENG_ATTRIBUTE              String?
+  NOTE_ID                    String?
+  PRINT_CONTROL_CODE         String?
+  SALES_UNIT_MEAS            String?
+  ACTIVEIND                  String?
+  CATALOG_TYPE               String?
+  CONV_FACTOR                String?
+  COST                       String?
+  CUSTOMS_STAT_NO            String?
+  DATE_ENTERED               String?
+  DISCOUNT_GROUP             String?
+  LIST_PRICE                 String?
+  LIST_PRICE_INCL_TAX        String?
+  RENTAL_LIST_PRICE          String?
+  RENTAL_LIST_PRICE_INCL_TAX String?
+  NOTE_TEXT                  String?
+  PRICE_CHANGE_DATE          String?
+  PRICE_CONV_FACTOR          String?
+  PRICE_UNIT_MEAS            String?
+  TAX_CODE                   String?
+  TAX_CLASS_ID               String?
+  TAXABLE                    String?
+  CLOSE_TOLERANCE            String?
+  CREATE_SM_OBJECT_OPTION    String?
+  EXPECTED_AVERAGE_PRICE     String?
+  PURCHASE_PART_NO           String?
+  REPLACEMENT_PART_NO        String?
+  DATE_OF_REPLACEMENT        String?
+  CUST_WARRANTY_ID           String?
+  NON_INV_PART_TYPE          String?
+  INTRASTAT_CONV_FACTOR      String?
+  SOURCING_OPTION            String?
+  RULE_ID                    String?
+  QUICK_REGISTERED_PART      String?
+  MINIMUM_QTY                String?
+  DELIVERY_TYPE              String?
+  EXPORT_TO_EXTERNAL_APP     String?
+  ALLOW_PARTIAL_PKG_DELIV    String?
+  SALES_PART_REBATE_GROUP    String?
+  PRIMARY_CATALOG            String?
+  INVERTED_CONV_FACTOR       String?
+  USE_PRICE_INCL_TAX         String?
+  SALES_TYPE                 String?
+  COUNTRY_OF_ORIGIN          String?
+  TEXT_ID                    String?
+  ROWVERSION                 String?
+  ROWKEY                     String?
+  CPA_CODE                   String?
+  HSN_SAC_CODE               String?
+  EMPTY                      String?
 
   @@map("_verkaufsartikeldaten")
   @@ignore

@@ -145,48 +145,48 @@ Unter `Solution manager / User Interface / Custom Objects / New Custom Event` so
 
     ```json
     {
-    "action": "upsert",
-    "data": {
-        "ACTIVITY_SEQ": "&NEW:ACTIVITY_SEQ",
-        "AVAILABILITY_CONTROL_ID": "&NEW:AVAILABILITY_CONTROL_ID",
-        "AVG_UNIT_TRANSIT_COST": "&NEW:AVG_UNIT_TRANSIT_COST",
-        "BAY_NO": "&NEW:BAY_NO",
-        "BIN_NO": "&NEW:BIN_NO",
-        "CATCH_QTY_IN_TRANSIT": "&NEW:CATCH_QTY_IN_TRANSIT",
-        "CATCH_QTY_ONHAND": "&NEW:CATCH_QTY_ONHAND",
-        "CONFIGURATION_ID": "&NEW:CONFIGURATION_ID",
-        "CONTRACT": "&NEW:CONTRACT",
-        "COUNT_VARIANCE": "&NEW:COUNT_VARIANCE",
-        "CREATE_DATE": "&NEW:CREATE_DATE",
-        "ENG_CHG_LEVEL": "&NEW:ENG_CHG_LEVEL",
-        "EXPIRATION_DATE": "&NEW:EXPIRATION_DATE",
-        "FREEZE_FLAG": "&NEW:FREEZE_FLAG",
-        "HANDLING_UNIT_ID": "&NEW:HANDLING_UNIT_ID",
-        "LAST_ACTIVITY_DATE": "&NEW:LAST_ACTIVITY_DATE",
-        "LAST_COUNT_DATE": "&NEW:LAST_COUNT_DATE",
-        "LATEST_TRANSACTION_ID": "&NEW:LATEST_TRANSACTION_ID",
-        "LOCATION_NO": "&NEW:LOCATION_NO",
-        "LOCATION_TYPE": "&NEW:LOCATION_TYPE",
-        "LOT_BATCH_NO": "&NEW:LOT_BATCH_NO",
-        "OWNING_CUSTOMER_NO": "&NEW:OWNING_CUSTOMER_NO",
-        "OWNING_VENDOR_NO": "&NEW:OWNING_VENDOR_NO",
-        "PART_NO": "&NEW:PART_NO",
-        "PART_OWNERSHIP": "&NEW:PART_OWNERSHIP",
-        "PROJECT_ID": "&NEW:PROJECT_ID",
-        "QTY_IN_TRANSIT": "&NEW:QTY_IN_TRANSIT",
-        "QTY_ONHAND": "&NEW:QTY_ONHAND",
-        "QTY_RESERVED": "&NEW:QTY_RESERVED",
-        "RECEIPT_DATE": "&NEW:RECEIPT_DATE",
-        "ROTABLE_PART_POOL_ID": "&NEW:ROTABLE_PART_POOL_ID",
-        "ROW_NO": "&NEW:ROW_NO",
-        "ROWKEY": "&NEW:ROWKEY",
-        "ROWVERSION": "&NEW:ROWVERSION",
-        "SERIAL_NO": "&NEW:SERIAL_NO",
-        "SOURCE": "&NEW:SOURCE",
-        "TIER_NO": "&NEW:TIER_NO",
-        "WAIV_DEV_REJ_NO": "&NEW:WAIV_DEV_REJ_NO",
-        "WAREHOUSE": "&NEW:WAREHOUSE"
-    }
+        "action": "upsert",
+        "data": {
+            "ACTIVITY_SEQ": "&NEW:ACTIVITY_SEQ",
+            "AVAILABILITY_CONTROL_ID": "&NEW:AVAILABILITY_CONTROL_ID",
+            "AVG_UNIT_TRANSIT_COST": "&NEW:AVG_UNIT_TRANSIT_COST",
+            "BAY_NO": "&NEW:BAY_NO",
+            "BIN_NO": "&NEW:BIN_NO",
+            "CATCH_QTY_IN_TRANSIT": "&NEW:CATCH_QTY_IN_TRANSIT",
+            "CATCH_QTY_ONHAND": "&NEW:CATCH_QTY_ONHAND",
+            "CONFIGURATION_ID": "&NEW:CONFIGURATION_ID",
+            "CONTRACT": "&NEW:CONTRACT",
+            "COUNT_VARIANCE": "&NEW:COUNT_VARIANCE",
+            "CREATE_DATE": "&NEW:CREATE_DATE",
+            "ENG_CHG_LEVEL": "&NEW:ENG_CHG_LEVEL",
+            "EXPIRATION_DATE": "&NEW:EXPIRATION_DATE",
+            "FREEZE_FLAG": "&NEW:FREEZE_FLAG",
+            "HANDLING_UNIT_ID": "&NEW:HANDLING_UNIT_ID",
+            "LAST_ACTIVITY_DATE": "&NEW:LAST_ACTIVITY_DATE",
+            "LAST_COUNT_DATE": "&NEW:LAST_COUNT_DATE",
+            "LATEST_TRANSACTION_ID": "&NEW:LATEST_TRANSACTION_ID",
+            "LOCATION_NO": "&NEW:LOCATION_NO",
+            "LOCATION_TYPE": "&NEW:LOCATION_TYPE",
+            "LOT_BATCH_NO": "&NEW:LOT_BATCH_NO",
+            "OWNING_CUSTOMER_NO": "&NEW:OWNING_CUSTOMER_NO",
+            "OWNING_VENDOR_NO": "&NEW:OWNING_VENDOR_NO",
+            "PART_NO": "&NEW:PART_NO",
+            "PART_OWNERSHIP": "&NEW:PART_OWNERSHIP",
+            "PROJECT_ID": "&NEW:PROJECT_ID",
+            "QTY_IN_TRANSIT": "&NEW:QTY_IN_TRANSIT",
+            "QTY_ONHAND": "&NEW:QTY_ONHAND",
+            "QTY_RESERVED": "&NEW:QTY_RESERVED",
+            "RECEIPT_DATE": "&NEW:RECEIPT_DATE",
+            "ROTABLE_PART_POOL_ID": "&NEW:ROTABLE_PART_POOL_ID",
+            "ROW_NO": "&NEW:ROW_NO",
+            "ROWKEY": "&NEW:ROWKEY",
+            "ROWVERSION": "&NEW:ROWVERSION",
+            "SERIAL_NO": "&NEW:SERIAL_NO",
+            "SOURCE": "&NEW:SOURCE",
+            "TIER_NO": "&NEW:TIER_NO",
+            "WAIV_DEV_REJ_NO": "&NEW:WAIV_DEV_REJ_NO",
+            "WAREHOUSE": "&NEW:WAREHOUSE"
+        }
     }
     ```
 
@@ -234,21 +234,21 @@ Unter `Solution manager / User Interface / Custom Objects / New Custom Event` so
 
     ```json
     {
-    "action": "upsert",
-    "data": {
-        "MAIN_TYPE": "&NEW:MAIN_TYPE",
-        "TYPE": "&NEW:TYPE",
-        "PATH": "&NEW:PATH",
-        "ATTRIBUTE": "&NEW:ATTRIBUTE",
-        "LANG_CODE": "&NEW:LANG_CODE",
-        "MODULE": "&NEW:MODULE",
-        "TEXT": "&NEW:TEXT",
-        "INSTALLATION_TEXT": "&NEW:INSTALLATION_TEXT",
-        "SYSTEM_DEFINED": "&NEW:SYSTEM_DEFINED",
-        "BULK": "&NEW:BULK",
-        "ROWVERSION": "&NEW:ROWVERSION",
-        "LAYER": "&NEW:LAYER"
-    }
+        "action": "upsert",
+        "data": {
+            "MAIN_TYPE": "&NEW:MAIN_TYPE",
+            "TYPE": "&NEW:TYPE",
+            "PATH": "&NEW:PATH",
+            "ATTRIBUTE": "&NEW:ATTRIBUTE",
+            "LANG_CODE": "&NEW:LANG_CODE",
+            "MODULE": "&NEW:MODULE",
+            "TEXT": "&NEW:TEXT",
+            "INSTALLATION_TEXT": "&NEW:INSTALLATION_TEXT",
+            "SYSTEM_DEFINED": "&NEW:SYSTEM_DEFINED",
+            "BULK": "&NEW:BULK",
+            "ROWVERSION": "&NEW:ROWVERSION",
+            "LAYER": "&NEW:LAYER"
+        }
     }
     ```
 
