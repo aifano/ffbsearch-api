@@ -16,23 +16,17 @@ export const languageSysTabOps = {
         data
     }),
     upsert: async (data: Prisma.LanguageSysTabCreateInput) => {
-        const exists = await prisma.languageSysTab.findUnique({
-            where: {
-                ATTRIBUTE_LANG_CODE_PATH: {
-                    ATTRIBUTE: data.ATTRIBUTE,
-                    LANG_CODE: data.LANG_CODE,
-                    PATH: data.PATH
-                }
-            }
+        const result = await prisma.languageSysTab.createMany({
+            data,
+            skipDuplicates: true
         });
 
-        if (exists?.PATH) {
+        const existed = result.count === 0;
+        if (existed) {
             await languageSysTabOps.update(data);
-        } else {
-            await languageSysTabOps.insert(data);
         }
 
-        return !!exists?.PATH;
+        return existed;
     },
     delete: (data: Prisma.LanguageSysTabCreateInput) => prisma.languageSysTab.delete({
         where: {

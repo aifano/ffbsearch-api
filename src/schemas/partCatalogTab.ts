@@ -12,19 +12,17 @@ export const partCatalogTabObs = {
         data
     }),
     upsert: async (data: Prisma.PartCatalogTabCreateInput) => {
-        const exists = await prisma.partCatalogTab.findUnique({
-            where: {
-                ROWKEY: data.ROWKEY
-            }
+        const result = await prisma.partCatalogTab.createMany({
+            data,
+            skipDuplicates: true
         });
 
-        if (exists?.ROWKEY) {
+        const exists = result.count === 0;
+        if (exists) {
             await partCatalogTabObs.update(data);
-        } else {
-            await partCatalogTabObs.insert(data);
         }
 
-        return !!exists?.ROWKEY;
+        return exists;
     },
     delete: (data: Prisma.PartCatalogTabCreateInput) => prisma.partCatalogTab.delete({
         where: {

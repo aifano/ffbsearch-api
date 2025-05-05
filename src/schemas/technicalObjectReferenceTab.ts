@@ -12,19 +12,17 @@ export const technicalObjectReferenceTabObs = {
         data
     }),
     upsert: async (data: Prisma.TechnicalObjectReferenceTabCreateInput) => {
-        const exists = await prisma.technicalObjectReferenceTab.findUnique({
-            where: {
-                ROWKEY: data.ROWKEY
-            }
+        const result = await prisma.technicalObjectReferenceTab.createMany({
+            data,
+            skipDuplicates: true
         });
 
-        if (exists?.ROWKEY) {
+        const existed = result.count === 0;
+        if (existed) {
             await technicalObjectReferenceTabObs.update(data);
-        } else {
-            await technicalObjectReferenceTabObs.insert(data);
         }
 
-        return !!exists?.ROWKEY;
+        return existed;
     },
     delete: (data: Prisma.TechnicalObjectReferenceTabCreateInput) => prisma.technicalObjectReferenceTab.delete({
         where: {

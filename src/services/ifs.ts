@@ -47,7 +47,7 @@ const sync = async (
     switch (action) {
       case 'insert':
         await ops.insert(data);
-        return { status: 201, message: 'inserted' };
+        return { status: 200, message: 'inserted' };
       case 'update':
         await ops.update(data);
         return { status: 200, message: 'updated' };
@@ -55,7 +55,7 @@ const sync = async (
         const exists = await ops.upsert(data);
 
         return {
-          status: exists ? 200 : 201,
+          status: 200,
           message: exists ? 'updated' : 'inserted',
         };
       case 'delete':

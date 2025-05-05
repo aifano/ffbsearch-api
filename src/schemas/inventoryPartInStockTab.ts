@@ -12,19 +12,17 @@ export const inventoryPartInStockTabOps = {
         data
     }),
     upsert: async (data: Prisma.InventoryPartInStockTabCreateInput) => {
-        const exists = await prisma.inventoryPartInStockTab.findUnique({
-            where: {
-                ROWKEY: data.ROWKEY
-            }
+        const result = await prisma.inventoryPartInStockTab.createMany({
+            data,
+            skipDuplicates: true,
         });
 
-        if (exists?.ROWKEY) {
-            await inventoryPartInStockTabOps.update(data);
-        } else {
-            await inventoryPartInStockTabOps.insert(data);
+        const existed = result.count === 0;
+        if ( existed ) {
+            inventoryPartInStockTabOps.update(data);
         }
 
-        return !!exists?.ROWKEY;
+        return existed;
     },
     delete: (data: Prisma.InventoryPartInStockTabCreateInput) => prisma.inventoryPartInStockTab.delete({
         where: {

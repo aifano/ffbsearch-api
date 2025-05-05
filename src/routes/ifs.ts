@@ -1,5 +1,7 @@
-import express, { Router } from 'express';
-import { handlePrismaSync } from '../services/syncService';
+import express from 'express';
+import { handlePrismaSync } from '../services/ifs';
+import { prisma } from '../utilities/prisma';
+import { inventoryPartInStockTabOps } from '../schemas/inventoryPartInStockTab';
 
 const allowedTables = [
     'inventory_part_in_stock_tab',    // alias: artikelbestand

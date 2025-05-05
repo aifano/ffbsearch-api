@@ -34,7 +34,9 @@ export function generateTests(
     it('should insert a record successfully', async () => {
         const data = buildTestData();
         const res = await sendSyncRequest(tableName, 'insert', data);
-        expect(res.status).toBe(201);
+        expect(res.status).toBe(200);
+        const responseBody = await res.text();
+        expect(responseBody).toBe('{"status":"inserted"}');
     });
 
     it('should fail to insert when required field is missing', async () => {
@@ -48,6 +50,8 @@ export function generateTests(
         const data = buildTestData({ [updateKey]: "UPDATED_TEST" });
         const res = await sendSyncRequest(tableName, 'update', data);
         expect(res.status).toBe(200);
+        const responseBody = await res.text();
+        expect(responseBody).toBe('{"status":"updated"}');
     });
 
     it('should fail to update a non-existing record', async () => {
@@ -71,6 +75,8 @@ export function generateTests(
         );
         const res = await sendSyncRequest(tableName, 'delete', keyData);
         expect(res.status).toBe(200);
+        const responseBody = await res.text();
+        expect(responseBody).toBe('{"status":"deleted"}');
     });
 
     it('should fail to delete non-existing record', async () => {
@@ -91,13 +97,17 @@ export function generateTests(
     it('should create a new record via upsert', async () => {
         const data = buildTestData();
         const res = await sendSyncRequest(tableName, 'upsert', data);
-        expect(res.status).toBe(201);
+        expect(res.status).toBe(200);
+        const responseBody = await res.text();
+        expect(responseBody).toBe('{"status":"inserted"}');
     });
 
     it('should update an existing record via upsert', async () => {
         const data = buildTestData({ [updateKey]: "UPDATED_TEST" });
         const res = await sendSyncRequest(tableName, 'upsert', data);
         expect(res.status).toBe(200);
+        const responseBody = await res.text();
+        expect(responseBody).toBe('{"status":"updated"}');
     });
 
     it('should delete the record after upsert', async () => {
@@ -106,5 +116,7 @@ export function generateTests(
         );
         const res = await sendSyncRequest(tableName, 'delete', keyData);
         expect(res.status).toBe(200);
+        const responseBody = await res.text();
+        expect(responseBody).toBe('{"status":"deleted"}');
     });
 }
