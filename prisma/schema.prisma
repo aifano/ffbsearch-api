@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["views"]
 }
 
 datasource db {
@@ -125,7 +126,7 @@ model TechnicalObjectReferenceTab {
   @@map("__technical_object_reference_tab")
 
   @@id([ROWKEY])
-  @@index([TECHNICAL_SPEC_NO])
+  @@index([KEY_VALUE, TECHNICAL_SPEC_NO])
 
   DT_OK                         String?
   KEY_REF                       String?
@@ -145,7 +146,7 @@ model TechnicalSpecificationTab {
   @@map("__technical_specification_tab")
 
   @@id([ROWKEY])
-  @@index([TECHNICAL_SPEC_NO])
+  @@index([ATTRIBUTE, TECHNICAL_SPEC_NO])
 
   ALT_UNIT                      String?
   ALT_VALUE_NO                  String?
@@ -165,6 +166,119 @@ model TechnicalSpecificationTab {
 
   synced_at                     DateTime @default(now())
 }
+
+view MappingAttributeDescriptionView {
+  ATTRIBUTE      String  @id
+  DESCRIPTION    String?
+  DESCRIPTION_EN String?
+  DESCRIPTION_FR String?
+  DESCRIPTION_ES String?
+  DESCRIPTION_GB String?
+
+  @@map("__mapping_attribute_description")
+}
+
+view MappingTechnicalClassDescriptionView {
+  TECHNICAL_CLASS String  @id
+  DESCRIPTION     String?
+  DESCRIPTION_EN  String?
+  DESCRIPTION_FR  String?
+  DESCRIPTION_ES  String?
+  DESCRIPTION_GB  String?
+
+  @@map("__mapping_technical_class_description")
+}
+
+view LocationView {
+  LOCATION_ID           String  @id
+  COMPANY_ID            String?
+  LOCATION_NAME         String?
+  LOCATION_COMPANY_NAME String?
+
+  @@map("__locations")
+}
+
+model AlgoliaBatch {
+  id                     String    @id @default(uuid())
+  synced_at              DateTime  @default(now())
+  status                 String?
+  error_message          String?
+
+  @@map("__algolia_batch")
+}
+
+
+model batch_algolia {
+  id                     Int       @id @default(autoincrement())
+  last_processed_part_no String?
+  batch_number           Int?
+  status                 String?
+  error_message          String?
+  updated_at             DateTime? @default(now()) @db.Timestamp(6)
+}
+
+model batch_algolia_test {
+  id                     Int       @id @default(autoincrement())
+  last_processed_part_no String?
+  batch_number           Int?
+  status                 String?
+  error_message          String?
+  updated_at             DateTime? @default(now()) @db.Timestamp(6)
+}
+
+model batch_algolia_v2 {
+  id                     Int       @id @default(autoincrement())
+  last_processed_part_no String?
+  batch_number           Int?
+  status                 String?
+  error_details          Json?
+  updated_at             DateTime? @default(now()) @db.Timestamp(6)
+}
+
+model batch_algolia_v2_errors {
+  id            Int       @id @default(autoincrement())
+  part_no       String?
+  batch_number  Int?
+  error_message String?
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+}
+
+model batch_elastic {
+  id                     Int       @id @default(autoincrement())
+  last_processed_part_no String?
+  batch_number           Int?
+  status                 String?
+  error_message          String?
+  updated_at             DateTime? @default(now()) @db.Timestamp(6)
+}
+
+model batch_pinecone {
+  id                     Int       @id @default(autoincrement())
+  last_processed_part_no String?
+  batch_number           Int?
+  status                 String?
+  error_message          String?
+  updated_at             DateTime? @default(now()) @db.Timestamp(6)
+}
+
+model batch_pinecone_v2 {
+  id                     Int       @id @default(autoincrement())
+  last_processed_part_no String?
+  batch_number           Int?
+  status                 String?
+  error_details          Json?
+  updated_at             DateTime? @default(now()) @db.Timestamp(6)
+}
+
+model batch_pinecone_v2_errors {
+  id            Int       @id @default(autoincrement())
+  part_no       String?
+  batch_number  Int?
+  error_message String?
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+}
+
+
 
 model OldInventoryPartInStockTab {
   CONTRACT                String?
@@ -608,91 +722,5 @@ model verkaufsartikeldaten {
   EMPTY                      String?
 
   @@map("_verkaufsartikeldaten")
-  @@ignore
-}
-
-model batch_algolia {
-  id                     Int       @id @default(autoincrement())
-  last_processed_part_no String?
-  batch_number           Int?
-  status                 String?
-  error_message          String?
-  updated_at             DateTime? @default(now()) @db.Timestamp(6)
-
-  @@ignore
-}
-
-model batch_algolia_test {
-  id                     Int       @id @default(autoincrement())
-  last_processed_part_no String?
-  batch_number           Int?
-  status                 String?
-  error_message          String?
-  updated_at             DateTime? @default(now()) @db.Timestamp(6)
-
-  @@ignore
-}
-
-model batch_algolia_v2 {
-  id                     Int       @id @default(autoincrement())
-  last_processed_part_no String?
-  batch_number           Int?
-  status                 String?
-  error_details          Json?
-  updated_at             DateTime? @default(now()) @db.Timestamp(6)
-
-  @@ignore
-}
-
-model batch_algolia_v2_errors {
-  id            Int       @id @default(autoincrement())
-  part_no       String?
-  batch_number  Int?
-  error_message String?
-  created_at    DateTime? @default(now()) @db.Timestamp(6)
-
-  @@ignore
-}
-
-model batch_elastic {
-  id                     Int       @id @default(autoincrement())
-  last_processed_part_no String?
-  batch_number           Int?
-  status                 String?
-  error_message          String?
-  updated_at             DateTime? @default(now()) @db.Timestamp(6)
-
-  @@ignore
-}
-
-model batch_pinecone {
-  id                     Int       @id @default(autoincrement())
-  last_processed_part_no String?
-  batch_number           Int?
-  status                 String?
-  error_message          String?
-  updated_at             DateTime? @default(now()) @db.Timestamp(6)
-
-  @@ignore
-}
-
-model batch_pinecone_v2 {
-  id                     Int       @id @default(autoincrement())
-  last_processed_part_no String?
-  batch_number           Int?
-  status                 String?
-  error_details          Json?
-  updated_at             DateTime? @default(now()) @db.Timestamp(6)
-
-  @@ignore
-}
-
-model batch_pinecone_v2_errors {
-  id            Int       @id @default(autoincrement())
-  part_no       String?
-  batch_number  Int?
-  error_message String?
-  created_at    DateTime? @default(now()) @db.Timestamp(6)
-
   @@ignore
 }

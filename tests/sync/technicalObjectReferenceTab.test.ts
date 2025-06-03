@@ -5,6 +5,6 @@ describe('IFS Sync API Tests', () => {
     const tableName = 'technical_object_reference_tab';
 
     describe(tableName, () => {
-        generateTests(tableName, ["ROWKEY"], ["TECHNICAL_SPEC_NO"], "KEY_REF");
+        generateTests(tableName, ["ROWKEY"], ["KEY_VALUE", "TECHNICAL_SPEC_NO"], "KEY_REF");
     });
 });

@@ -1,11 +1,9 @@
-// src/index.ts
 import express from 'express';
 import { PORT } from './utilities/config';
 import { router as ifsSyncRouter } from './routes/ifs';
-// import { router as algoliaSyncRouter } from './routes/algolia';
+import { router as algoliaSyncRouter } from './routes/algolia';
 
 const app = express();
-
 
 app.use(express.json({
     verify: (req, res, buf) => {
@@ -22,10 +20,9 @@ const jsonErrorHandler: express.ErrorRequestHandler = (err, req, res, next) => {
 };
 app.use(jsonErrorHandler);
 
-
 app.use(express.json());
 app.use('/ifs-sync', ifsSyncRouter);
-// app.use('/algolia-sync', algoliaSyncRouter);
+app.use('/algolia-sync', algoliaSyncRouter);
 
 app.listen(PORT, () => {
   console.log(`IFS Sync API läuft auf Port ${PORT}`);

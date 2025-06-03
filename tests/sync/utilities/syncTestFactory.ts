@@ -10,7 +10,7 @@ export function generateTests(
         const base: Record<string, string> = {};
 
         [...primaryKeys, ...foreignKeys].forEach(key => {
-            base[key] = "TEST";
+            base[key] = "AIFANO_TEST";
         });
 
         return { ...base, ...override };
@@ -18,7 +18,7 @@ export function generateTests(
 
     async function cleanup() {
         const keyData = Object.fromEntries(
-            primaryKeys.map(key => [key, "TEST"])
+            primaryKeys.map(key => [key, "AIFANO_TEST"])
         );
         return await sendSyncRequest(tableName, 'delete', keyData);
     }
@@ -36,14 +36,18 @@ export function generateTests(
         const res = await sendSyncRequest(tableName, 'insert', data);
         expect(res.status).toBe(200);
         const responseBody = await res.text();
-        expect(responseBody).toBe('{"status":"inserted"}');
+        const parsedResponse = JSON.parse(responseBody);
+        expect(parsedResponse).toEqual({ status: "inserted" });
     });
 
     it('should fail to insert when required field is missing', async () => {
         const data = buildTestData();
         delete data[primaryKeys[0]];
         const res = await sendSyncRequest(tableName, 'insert', data);
-        expect(res.status).toBe(422);
+        expect(res.status).toBe(200);
+        const responseBody = await res.text();
+        const parsedResponse = JSON.parse(responseBody);
+        expect(parsedResponse.status).toEqual('Validation failed');
     });
 
     it('should update the record successfully', async () => {
@@ -51,7 +55,8 @@ export function generateTests(
         const res = await sendSyncRequest(tableName, 'update', data);
         expect(res.status).toBe(200);
         const responseBody = await res.text();
-        expect(responseBody).toBe('{"status":"updated"}');
+        const parsedResponse = JSON.parse(responseBody);
+        expect(parsedResponse.status).toEqual('updated');
     });
 
     it('should fail to update a non-existing record', async () => {
@@ -60,23 +65,30 @@ export function generateTests(
             [updateKey]: "UPDATED_TEST_2"
         });
         const res = await sendSyncRequest(tableName, 'update', data);
-        expect(res.status).toBe(404);
+        expect(res.status).toBe(200);
+        const responseBody = await res.text();
+        const parsedResponse = JSON.parse(responseBody);
+        expect(parsedResponse.status).toEqual('Record not found');
     });
 
     it('should fail to insert when extra field is present', async () => {
         const data = buildTestData({ EXTRA_FIELD: "unexpected" });
         const res = await sendSyncRequest(tableName, 'insert', data);
-        expect(res.status).toBeGreaterThanOrEqual(422);
+        expect(res.status).toBe(200);
+        const responseBody = await res.text();
+        const parsedResponse = JSON.parse(responseBody);
+        expect(parsedResponse.status).toEqual('Validation failed');
     });
 
     it('should delete the record successfully', async () => {
         const keyData = Object.fromEntries(
-            primaryKeys.map(key => [key, "TEST"])
+            primaryKeys.map(key => [key, "AIFANO_TEST"])
         );
         const res = await sendSyncRequest(tableName, 'delete', keyData);
         expect(res.status).toBe(200);
         const responseBody = await res.text();
-        expect(responseBody).toBe('{"status":"deleted"}');
+        const parsedResponse = JSON.parse(responseBody);
+        expect(parsedResponse.status).toEqual('deleted');
     });
 
     it('should fail to delete non-existing record', async () => {
@@ -84,14 +96,18 @@ export function generateTests(
             primaryKeys.map(key => [key, "NON_EXISTENT"])
         );
         const res = await sendSyncRequest(tableName, 'delete', keyData);
-        expect(res.status).toBe(404);
+        const responseBody = await res.text();
+        const parsedResponse = JSON.parse(responseBody);
+        expect(parsedResponse.status).toEqual('Record not found');
     });
 
     it('should fail to delete without primary key', async () => {
         const data = buildTestData();
         delete data[primaryKeys[0]];
         const res = await sendSyncRequest(tableName, 'delete', data);
-        expect(res.status).toBe(422);
+        const responseBody = await res.text();
+        const parsedResponse = JSON.parse(responseBody);
+        expect(parsedResponse.status).toEqual('Validation failed');
     });
 
     it('should create a new record via upsert', async () => {
@@ -99,7 +115,8 @@ export function generateTests(
         const res = await sendSyncRequest(tableName, 'upsert', data);
         expect(res.status).toBe(200);
         const responseBody = await res.text();
-        expect(responseBody).toBe('{"status":"inserted"}');
+        const parsedResponse = JSON.parse(responseBody);
+        expect(parsedResponse.status).toEqual('inserted');
     });
 
     it('should update an existing record via upsert', async () => {
@@ -107,16 +124,18 @@ export function generateTests(
         const res = await sendSyncRequest(tableName, 'upsert', data);
         expect(res.status).toBe(200);
         const responseBody = await res.text();
-        expect(responseBody).toBe('{"status":"updated"}');
+        const parsedResponse = JSON.parse(responseBody);
+        expect(parsedResponse.status).toEqual('updated');
     });
 
     it('should delete the record after upsert', async () => {
         const keyData = Object.fromEntries(
-            primaryKeys.map(key => [key, "TEST"])
+            primaryKeys.map(key => [key, "AIFANO_TEST"])
         );
         const res = await sendSyncRequest(tableName, 'delete', keyData);
         expect(res.status).toBe(200);
         const responseBody = await res.text();
-        expect(responseBody).toBe('{"status":"deleted"}');
+        const parsedResponse = JSON.parse(responseBody);
+        expect(parsedResponse.status).toEqual('deleted');
     });
 }

@@ -4,42 +4,55 @@ import { Prisma } from '@prisma/client';
 import { partCatalogTabObs } from '../schemas/partCatalogTab';
 import { technicalObjectReferenceTabObs } from '../schemas/technicalObjectReferenceTab';
 import { technicalSpecificationTabObs } from '../schemas/technicalSpecificationTab';
+import { appendFile } from 'fs/promises';
 
+
+type OpsType = {
+  insert: (data: any) => Promise<any>;
+  update: (data: any) => Promise<any>;
+  upsert: (data: any) => Promise<any>;
+  delete: (data: any) => Promise<any>;
+  buildSql: (action: string, cols: string, vals: string, data: any) => string;
+};
+
+const tableOpsMapping: Record<string, OpsType> = {
+  'inventory_part_in_stock_tab':    inventoryPartInStockTabOps,
+  'artikelbestand':                 inventoryPartInStockTabOps,
+  'language_sys_tab':               languageSysTabOps,
+  'part_catalog_tab':               partCatalogTabObs,
+  'hauptartikeldaten':              partCatalogTabObs,
+  'technical_object_reference_tab': technicalObjectReferenceTabObs,
+  'referenz-artikel-merkmale':      technicalObjectReferenceTabObs,
+  'technical_specification_tab':    technicalSpecificationTabObs,
+  'merkmalsdaten':                  technicalSpecificationTabObs
+}
 
 export const handlePrismaSync = async (table: string, action: string, data: any) => {
   console.log(`Start ${action} for table ${table}`);
-  switch (table) {
-    case 'inventory_part_in_stock_tab':
-    case 'artikelbestand':
-      return await sync(inventoryPartInStockTabOps, action, data);
 
-    case 'language_sys_tab':
-      return await sync(languageSysTabOps, action, data);
-
-    case 'part_catalog_tab':
-    case 'hauptartikeldaten':
-      return await sync(partCatalogTabObs, action, data);
-
-    case 'technical_object_reference_tab':
-    case 'referenz-artikel-merkmale':
-      return await sync(technicalObjectReferenceTabObs, action, data);
-
-    case 'technical_specification_tab':
-    case 'merkmalsdaten':
-      return await sync(technicalSpecificationTabObs, action, data);
-
-    default:
-      throw new Error('Table not found');
+  if (!(table in tableOpsMapping)) {
+    return { status: 400, message: 'Invalid table name' };
   }
+  if (!['insert', 'update', 'upsert', 'delete'].includes(action)) {
+    return { status: 400, message: 'Invalid action' };
+  }
+
+  const cols = Object.keys(data).map(col => `"${col}"`).join(',');
+  const vals = Object.values(data).map(value => `'${value}'`).join(',');
+  const result = await sync(tableOpsMapping[table], action, data);
+  const sqlStmt = await tableOpsMapping[table].buildSql(action, cols, vals, data);
+
+  const timestamp = new Date().toISOString();
+  const fullSqlStmt = `/* ${timestamp} */ ${sqlStmt} -- ${result.message}\n`;
+
+  const date = timestamp.split('T')[0];
+  await appendFile(`logs/ifs-${date}.sql`, fullSqlStmt);
+
+  return { status: 200, message: result.message };
 };
 
 const sync = async (
-  ops: {
-    insert: (data: any) => Promise<any>;
-    update: (data: any) => Promise<any>;
-    upsert: (data: any) => Promise<any>;
-    delete: (data: any) => Promise<any>;
-  },
+  ops: OpsType,
   action: string,
   data: any
 ) => {

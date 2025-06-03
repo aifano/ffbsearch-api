@@ -2,6 +2,8 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '../utilities/prisma';
 
 export const partCatalogTabObs = {
+    tableName: '__part_catalog_tab',
+
     insert: (data: Prisma.PartCatalogTabCreateInput) => prisma.partCatalogTab.create({
         data
     }),
@@ -28,5 +30,16 @@ export const partCatalogTabObs = {
         where: {
             ROWKEY: data.ROWKEY
         }
-    })
+    }),
+    buildSql: (action: string, cols: string, vals: string, data: Prisma.PartCatalogTabCreateInput) => {
+        let sqlStmt = '';
+        if (action === 'delete') {
+            sqlStmt = `DELETE FROM "${partCatalogTabObs.tableName}" WHERE ROWKEY='${data.ROWKEY}';`;
+        } else if (action === 'insert' || action === 'upsert') {
+            sqlStmt = `INSERT INTO "${partCatalogTabObs.tableName}" (${cols}) VALUES (${vals}) ON CONFLICT ("ROWKEY") DO UPDATE SET ${Object.entries(data).map(([k, v]) => `"${k}"='${v}'`).join(',')};`;
+        } else if (action === 'update') {
+            sqlStmt = `UPDATE "${partCatalogTabObs.tableName}" SET ${Object.entries(data).map(([k, v]) => `"${k}"='${v}'`).join(',')} WHERE ROWKEY='${data.ROWKEY}';`;
+        }
+        return sqlStmt;
+    }
 };

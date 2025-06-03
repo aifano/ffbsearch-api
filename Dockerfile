@@ -2,6 +2,7 @@
 FROM node:18.19.1-alpine as base
 
 # Then, we need to copy our package.json and .env file into the image root folder. 
+WORKDIR /app
 COPY package.json ./
 COPY package-lock.json ./
 

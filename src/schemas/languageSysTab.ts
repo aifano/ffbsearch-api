@@ -2,6 +2,8 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '../utilities/prisma';
 
 export const languageSysTabOps = {
+    tableName: '__language_sys_tab',
+
     insert: (data: Prisma.LanguageSysTabCreateInput) => prisma.languageSysTab.create({
         data
     }),
@@ -36,5 +38,16 @@ export const languageSysTabOps = {
                 PATH: data.PATH
             }
         }
-    })
+    }),
+    buildSql: (action: string, cols: string, vals: string, data: Prisma.LanguageSysTabCreateInput) => {
+        let sqlStmt = '';
+        if (action === 'delete') {
+            sqlStmt = `DELETE FROM "${languageSysTabOps.tableName}" WHERE ATTRIBUTE='${data.ATTRIBUTE}' AND LANG_CODE='${data.LANG_CODE}' AND PATH='${data.PATH}';`;
+        } else if (action === 'insert' || action === 'upsert') {
+            sqlStmt = `INSERT INTO "${languageSysTabOps.tableName}" (${cols}) VALUES (${vals}) ON CONFLICT ("ROWKEY") DO UPDATE SET ${Object.entries(data).map(([k, v]) => `"${k}"='${v}'`).join(',')};`;
+        } else if (action === 'update') {
+            sqlStmt = `UPDATE "${languageSysTabOps.tableName}" SET ${Object.entries(data).map(([k, v]) => `"${k}"='${v}'`).join(',')} WHERE ATTRIBUTE='${data.ATTRIBUTE}' AND LANG_CODE='${data.LANG_CODE}' AND PATH='${data.PATH}';`;
+        }
+        return sqlStmt;
+    }
 };

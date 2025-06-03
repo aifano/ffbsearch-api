@@ -3,7 +3,8 @@ export const sendSyncRequest = async (
     action: 'insert' | 'update' | 'upsert' | 'delete',
     data: Record<string, any>
 ): Promise<Response> => {
-    const url = `https://api.ffbsearch.aifano.com/ifs-sync/${table}`;
+    const url = `http://localhost:3000/ifs-sync/${table}`;
+    // const url = `https://api.ffbsearch.aifano.com/ifs-sync/${table}`;
 
     return await fetch(url, {
         method: 'POST',
