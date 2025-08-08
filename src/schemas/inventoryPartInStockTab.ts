@@ -20,8 +20,8 @@ export const inventoryPartInStockTabOps = {
         });
 
         const existed = result.count === 0;
-        if ( existed ) {
-            inventoryPartInStockTabOps.update(data);
+        if (existed) {
+            await inventoryPartInStockTabOps.update(data);
         }
 
         return existed;
