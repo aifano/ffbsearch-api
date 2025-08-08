@@ -17,11 +17,23 @@ export const logger = winston.createLogger({
     environment: process.env.NODE_ENV || 'development'
   },
   transports: [
-    // Console output (for Docker/Grafana)
+    // Additional console.log output for direct visibility
     new winston.transports.Console({
-      format: jsonFormat
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.printf(({ timestamp, level, message, ...meta }) => {
+          const logEntry = {
+            timestamp,
+            level,
+            message,
+            ...meta
+          };
+          console.log(JSON.stringify(logEntry));
+          return ''; // Return empty string to avoid duplicate output
+        })
+      )
     }),
-    
+
     // Daily rotating file for JSON logs
     new winston.transports.File({
       filename: path.join('logs', `ifs-${new Date().toISOString().split('T')[0]}.json`),
@@ -29,17 +41,8 @@ export const logger = winston.createLogger({
       maxsize: 50 * 1024 * 1024, // 50MB
       maxFiles: 30 // Keep 30 days
     }),
-    
-    // Error-only file
-    new winston.transports.File({
-      filename: path.join('logs', 'error.json'),
-      level: 'error',
-      format: jsonFormat,
-      maxsize: 10 * 1024 * 1024, // 10MB
-      maxFiles: 10
-    })
   ],
-  
+
   // Handle uncaught exceptions
   exceptionHandlers: [
     new winston.transports.File({
@@ -47,7 +50,7 @@ export const logger = winston.createLogger({
       format: jsonFormat
     })
   ],
-  
+
   // Handle unhandled promise rejections
   rejectionHandlers: [
     new winston.transports.File({
