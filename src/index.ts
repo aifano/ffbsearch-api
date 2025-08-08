@@ -3,6 +3,7 @@ import { PORT } from './utilities/config';
 import { router as ifsSyncRouter } from './routes/ifs';
 import { router as algoliaSyncRouter } from './routes/algolia';
 import { repairAndParseJSON } from './utilities/jsonRepair';
+import { logJsonRepairAttempt, logJsonRepairSuccess, logJsonRepairFailure, logServerStart } from './utilities/logger';
 
 const app = express();
 
@@ -19,19 +20,18 @@ app.use((req, res, next) => {
                 req.body = JSON.parse(body);
                 next();
             } catch (error) {
-                console.log('JSON parse failed, attempting repair...', error);
-                console.log('Raw body:', body);
+                const errorMessage = error instanceof Error ? error.message : String(error);
+                logJsonRepairAttempt(body, errorMessage);
 
                 // Try to repair and parse the JSON
                 const repairResult = repairAndParseJSON(body);
 
                 if (repairResult.success) {
-                    console.log('JSON repair successful!');
-                    console.log('Repaired JSON:', JSON.stringify(repairResult.data, null, 2));
+                    logJsonRepairSuccess(body, repairResult.data);
                     req.body = repairResult.data;
                     next();
                 } else {
-                    console.error('JSON repair failed:', repairResult.error);
+                    logJsonRepairFailure(body, repairResult.error!);
                     res.status(400).json({
                         error: "Invalid JSON payload",
                         details: repairResult.error,
@@ -49,5 +49,5 @@ app.use('/ifs-sync', ifsSyncRouter);
 app.use('/algolia-sync', algoliaSyncRouter);
 
 app.listen(PORT, () => {
-  console.log(`IFS Sync API läuft auf Port ${PORT}`);
+  logServerStart(PORT);
 });
