@@ -1,5 +1,6 @@
 import express from 'express';
 import { handlePrismaSync } from '../services/ifs';
+import { logRouteError } from '../utilities/logger';
 
 export const router = express.Router();
 
@@ -12,7 +13,7 @@ router.post('/:table', async (req, res) => {
         res.status(result.status).json({ status: result.message });
         return;
     } catch (error) {
-        console.error('Sync Error:', error);
+        logRouteError(table, action, data, error);
         res.status(500).json({ error: 'Internal server error' });
         return;
     }

@@ -4,7 +4,7 @@ import { Prisma } from '@prisma/client';
 import { partCatalogTabObs } from '../schemas/partCatalogTab';
 import { technicalObjectReferenceTabObs } from '../schemas/technicalObjectReferenceTab';
 import { technicalSpecificationTabObs } from '../schemas/technicalSpecificationTab';
-import { appendFile } from 'fs/promises';
+import { logSyncStart, logSyncSuccess, logSyncError } from '../utilities/logger';
 
 
 type OpsType = {
@@ -28,27 +28,32 @@ const tableOpsMapping: Record<string, OpsType> = {
 }
 
 export const handlePrismaSync = async (table: string, action: string, data: any) => {
-  console.log(`Start ${action} for table ${table}`);
+  // Start logging
+  logSyncStart(table, action, data);
 
   if (!(table in tableOpsMapping)) {
+    const error = new Error('Invalid table name');
+    logSyncError(table, action, data, error, { status: 400, message: 'Invalid table name' });
     return { status: 400, message: 'Invalid table name' };
   }
+
   if (!['insert', 'update', 'upsert', 'delete'].includes(action)) {
+    const error = new Error('Invalid action');
+    logSyncError(table, action, data, error, { status: 400, message: 'Invalid action' });
     return { status: 400, message: 'Invalid action' };
   }
 
-  const cols = Object.keys(data).map(col => `"${col}"`).join(',');
-  const vals = Object.values(data).map(value => `'${value}'`).join(',');
   const result = await sync(tableOpsMapping[table], action, data);
-  const sqlStmt = await tableOpsMapping[table].buildSql(action, cols, vals, data);
 
-  const timestamp = new Date().toISOString();
-  const fullSqlStmt = `/* ${timestamp} */ ${sqlStmt} -- ${result.message}\n`;
+  // Success/Error logging
+  if (result.status === 200) {
+    logSyncSuccess(table, action, data, result);
+  } else {
+    const error = new Error(result.message);
+    logSyncError(table, action, data, error, result);
+  }
 
-  const date = timestamp.split('T')[0];
-  await appendFile(`logs/ifs-${date}.sql`, fullSqlStmt);
-
-  return { status: 200, message: result.message };
+  return { status: result.status === 200 ? 200 : result.status, message: result.message };
 };
 
 const sync = async (
@@ -78,8 +83,8 @@ const sync = async (
         throw new Error('Unknown action');
     }
   } catch (error) {
-    console.error('Error during sync', {data, error});
     const mapped = mapPrismaError(error);
+    logSyncError('unknown', action, data, error, mapped);
     return { status: mapped.status, message: mapped.message };
   }
 };
